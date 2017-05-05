@@ -17,7 +17,7 @@ public class Test : MonoBehaviour {
         s.WriteUInt(12345);
         s.WriteLong(long.MaxValue - 10);
         
-        Debug.Log("send l+ength=" + s.SendEnd);
+        Debug.Log("send length=" + s.SendEnd);
         NetworkStream s2 = new NetworkStream();
         s2.SetReadBuffer(data, s.SendEnd);
         Debug.Log(s2.ReadByte());
