@@ -1,6 +1,6 @@
 #libevent pkg-config source file
 
-prefix=/home/hlx_window_share/ppt_demo/server/src/3rd/libevent/build/linux
+prefix=/Users/heyuhan/Desktop/ppt_demo/server/src/3rd/libevent/build/mac
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
@@ -11,6 +11,6 @@ Version: 2.1.8-stable
 Requires:
 Conflicts:
 Libs: -L${libdir} -levent_extra
-Libs.private: -lrt 
+Libs.private: 
 Cflags: -I${includedir}
 

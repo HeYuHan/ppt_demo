@@ -4,6 +4,9 @@
 client/Library/*
 
 # User-specific files
+server/src/3rd/libevent/.deps/
+*.o
+*.d
 *.suo
 *.user
 *.userosscache

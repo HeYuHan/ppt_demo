@@ -10,7 +10,10 @@ typedef unsigned int uint32;
 typedef int int32;
 typedef unsigned short uint16;
 typedef short int16;
+typedef unsigned long int ulong;
 
+typedef unsigned short int ushort;
+typedef unsigned int uint;
 
 #ifdef FD_SETSIZE
 #undef FD_SETSIZE
@@ -20,13 +23,8 @@ typedef short int16;
 #endif
 
 #ifndef WIN32
-typedef int SOCKET
+typedef int SOCKET;
 #define SOCKET_ERROR -1
 #define INVALID_SOCKET -1
 #endif // !WIN32
-#ifdef WIN32
-typedef unsigned long int ulong;
-typedef unsigned short int ushort;
-typedef unsigned int uint;
-#endif
 #endif

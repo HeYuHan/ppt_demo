@@ -11,13 +11,13 @@
 /* #undef DISABLE_THREAD_SUPPORT */
 
 /* Define to 1 if you have the `accept4' function. */
-#define HAVE_ACCEPT4 1
+/* #undef HAVE_ACCEPT4 */
 
 /* Define to 1 if you have the `arc4random' function. */
-/* #undef HAVE_ARC4RANDOM */
+#define HAVE_ARC4RANDOM 1
 
 /* Define to 1 if you have the `arc4random_buf' function. */
-/* #undef HAVE_ARC4RANDOM_BUF */
+#define HAVE_ARC4RANDOM_BUF 1
 
 /* Define to 1 if you have the <arpa/inet.h> header file. */
 #define HAVE_ARPA_INET_H 1
@@ -35,11 +35,11 @@
 
 /* Define to 1 if you have the declaration of `KERN_RANDOM', and to 0 if you
    don't. */
-#define HAVE_DECL_KERN_RANDOM 1
+#define HAVE_DECL_KERN_RANDOM 0
 
 /* Define to 1 if you have the declaration of `RANDOM_UUID', and to 0 if you
    don't. */
-#define HAVE_DECL_RANDOM_UUID 1
+#define HAVE_DECL_RANDOM_UUID 0
 
 /* Define if /dev/poll is available */
 /* #undef HAVE_DEVPOLL */
@@ -48,13 +48,13 @@
 #define HAVE_DLFCN_H 1
 
 /* Define if your system supports the epoll system calls */
-#define HAVE_EPOLL 1
+/* #undef HAVE_EPOLL */
 
 /* Define to 1 if you have the `epoll_create1' function. */
-#define HAVE_EPOLL_CREATE1 1
+/* #undef HAVE_EPOLL_CREATE1 */
 
 /* Define to 1 if you have the `epoll_ctl' function. */
-#define HAVE_EPOLL_CTL 1
+/* #undef HAVE_EPOLL_CTL */
 
 /* Define to 1 if you have the <errno.h> header file. */
 #define HAVE_ERRNO_H 1
@@ -63,7 +63,7 @@
 /* #undef HAVE_ERR_REMOVE_THREAD_STATE */
 
 /* Define to 1 if you have the `eventfd' function. */
-#define HAVE_EVENTFD 1
+/* #undef HAVE_EVENTFD */
 
 /* Define if your system supports event ports */
 /* #undef HAVE_EVENT_PORTS */
@@ -126,19 +126,19 @@
 #define HAVE_INTTYPES_H 1
 
 /* Define to 1 if you have the `issetugid' function. */
-/* #undef HAVE_ISSETUGID */
+#define HAVE_ISSETUGID 1
 
 /* Define to 1 if you have the `kqueue' function. */
-/* #undef HAVE_KQUEUE */
+#define HAVE_KQUEUE 1
 
 /* Define if the system has zlib */
 #define HAVE_LIBZ 1
 
 /* Define to 1 if you have the `mach_absolute_time' function. */
-/* #undef HAVE_MACH_ABSOLUTE_TIME */
+#define HAVE_MACH_ABSOLUTE_TIME 1
 
 /* Define to 1 if you have the <mach/mach_time.h> header file. */
-/* #undef HAVE_MACH_MACH_TIME_H */
+#define HAVE_MACH_MACH_TIME_H 1
 
 /* Define to 1 if you have the <memory.h> header file. */
 #define HAVE_MEMORY_H 1
@@ -162,13 +162,13 @@
 #define HAVE_NETINET_TCP_H 1
 
 /* Define if the system has openssl */
-/* #undef HAVE_OPENSSL */
+#define HAVE_OPENSSL 1
 
 /* Define to 1 if you have the `pipe' function. */
 #define HAVE_PIPE 1
 
 /* Define to 1 if you have the `pipe2' function. */
-#define HAVE_PIPE2 1
+/* #undef HAVE_PIPE2 */
 
 /* Define to 1 if you have the `poll' function. */
 #define HAVE_POLL 1
@@ -216,7 +216,7 @@
 #define HAVE_SIGNAL 1
 
 /* Define to 1 if you have the `splice' function. */
-#define HAVE_SPLICE 1
+/* #undef HAVE_SPLICE */
 
 /* Define to 1 if you have the <stdarg.h> header file. */
 #define HAVE_STDARG_H 1
@@ -237,7 +237,7 @@
 #define HAVE_STRING_H 1
 
 /* Define to 1 if you have the `strlcpy' function. */
-/* #undef HAVE_STRLCPY */
+#define HAVE_STRLCPY 1
 
 /* Define to 1 if you have the `strsep' function. */
 #define HAVE_STRSEP 1
@@ -255,19 +255,19 @@
 #define HAVE_STRUCT_IN6_ADDR 1
 
 /* Define to 1 if `s6_addr16' is a member of `struct in6_addr'. */
-#define HAVE_STRUCT_IN6_ADDR_S6_ADDR16 1
+/* #undef HAVE_STRUCT_IN6_ADDR_S6_ADDR16 */
 
 /* Define to 1 if `s6_addr32' is a member of `struct in6_addr'. */
-#define HAVE_STRUCT_IN6_ADDR_S6_ADDR32 1
+/* #undef HAVE_STRUCT_IN6_ADDR_S6_ADDR32 */
 
 /* Define to 1 if the system has the type `struct sockaddr_in6'. */
 #define HAVE_STRUCT_SOCKADDR_IN6 1
 
 /* Define to 1 if `sin6_len' is a member of `struct sockaddr_in6'. */
-/* #undef HAVE_STRUCT_SOCKADDR_IN6_SIN6_LEN */
+#define HAVE_STRUCT_SOCKADDR_IN6_SIN6_LEN 1
 
 /* Define to 1 if `sin_len' is a member of `struct sockaddr_in'. */
-/* #undef HAVE_STRUCT_SOCKADDR_IN_SIN_LEN */
+#define HAVE_STRUCT_SOCKADDR_IN_SIN_LEN 1
 
 /* Define to 1 if the system has the type `struct sockaddr_storage'. */
 #define HAVE_STRUCT_SOCKADDR_STORAGE 1
@@ -288,13 +288,13 @@
 /* #undef HAVE_SYS_DEVPOLL_H */
 
 /* Define to 1 if you have the <sys/epoll.h> header file. */
-#define HAVE_SYS_EPOLL_H 1
+/* #undef HAVE_SYS_EPOLL_H */
 
 /* Define to 1 if you have the <sys/eventfd.h> header file. */
-#define HAVE_SYS_EVENTFD_H 1
+/* #undef HAVE_SYS_EVENTFD_H */
 
 /* Define to 1 if you have the <sys/event.h> header file. */
-/* #undef HAVE_SYS_EVENT_H */
+#define HAVE_SYS_EVENT_H 1
 
 /* Define to 1 if you have the <sys/ioctl.h> header file. */
 #define HAVE_SYS_IOCTL_H 1
@@ -315,7 +315,7 @@
 #define HAVE_SYS_SELECT_H 1
 
 /* Define to 1 if you have the <sys/sendfile.h> header file. */
-#define HAVE_SYS_SENDFILE_H 1
+/* #undef HAVE_SYS_SENDFILE_H */
 
 /* Define to 1 if you have the <sys/socket.h> header file. */
 #define HAVE_SYS_SOCKET_H 1
@@ -327,7 +327,7 @@
 #define HAVE_SYS_SYSCTL_H 1
 
 /* Define to 1 if you have the <sys/timerfd.h> header file. */
-#define HAVE_SYS_TIMERFD_H 1
+/* #undef HAVE_SYS_TIMERFD_H */
 
 /* Define to 1 if you have the <sys/time.h> header file. */
 #define HAVE_SYS_TIME_H 1
@@ -354,7 +354,7 @@
 #define HAVE_TIMERCMP 1
 
 /* Define to 1 if you have the `timerfd_create' function. */
-#define HAVE_TIMERFD_CREATE 1
+/* #undef HAVE_TIMERFD_CREATE */
 
 /* Define if timerisset is defined in <sys/time.h> */
 #define HAVE_TIMERISSET 1
@@ -393,7 +393,7 @@
 /* #undef HAVE_WAITPID_WITH_WNOWAIT */
 
 /* Define if kqueue works correctly with pipes */
-/* #undef HAVE_WORKING_KQUEUE */
+#define HAVE_WORKING_KQUEUE 1
 
 /* Define to 1 if you have the <zlib.h> header file. */
 #define HAVE_ZLIB_H 1

@@ -46,7 +46,6 @@ int Event::AddTimer(TimerEvent* e, long sec, long mic/* =0 */)
 void Event::AcceptCallBack(evutil_socket_t listener, short event, void* arg)
 {
 	
-	struct event_base *base = (struct event_base*)arg;
 	struct sockaddr_in ss;
 	socklen_t slen = sizeof(ss);
 	int fd = accept(listener, (struct sockaddr*)&ss, &slen);
@@ -115,7 +114,7 @@ struct event* Event::AccpetSocket(SOCKET listener,IServerSocket *handle)
 	{
 		return listen_ev;
 	}
-	free(listen_ev);
+	
 	return nullptr;
 }
 struct bufferevent* Event::ListenSocket(SOCKET socket,IClientSocket *handle)
@@ -128,7 +127,7 @@ struct bufferevent* Event::ListenSocket(SOCKET socket,IClientSocket *handle)
 	{
 		return bev;
 	}
-	free(bev);
+	bufferevent_free(bev);
 	return nullptr;
 }
 int Event::RemoveEvent(struct event* e)

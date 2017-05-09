@@ -1,5 +1,5 @@
 #include "TcpConnection.h"
-#include <new.h>
+#include "../common.h"
 TcpConnection::TcpConnection():
 	m_State(S_Idle),m_BufferEvent(nullptr)
 {

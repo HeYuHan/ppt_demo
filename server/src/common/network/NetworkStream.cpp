@@ -7,10 +7,10 @@ NetworkStream::NetworkStream():
 	,write_end(nullptr)
 	,read_position(nullptr)
 	,read_end(nullptr)
-	,write_buff_len(0)
-	,read_buff_len(0)
 	,send_position(nullptr)
 	,send_end(nullptr)
+	,write_buff_len(0)
+	,read_buff_len(0)
 {
 }
 

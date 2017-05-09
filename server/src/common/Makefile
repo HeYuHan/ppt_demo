@@ -1,6 +1,6 @@
-CC = g++-4.8
+CC = g++
 AR = ar
-CFLAGS = -c -fPIC -I. -I../3rd/libevent/build/linux/include --std=c++11
+CFLAGS = -c -fPIC -I. --std=c++11
 
 ifdef RELEASE
 	CFLAGS += -Wall -Werror -g -O2
@@ -8,13 +8,28 @@ else
 	CFLAGS += -Wall -Werror -g -DDEBUG
 endif
 
+EVENT_LIB = $(wildcard ../3rd/libevent/build/linux/lib/*a)
+INCLUED_EVENT= 
+
+ifdef LINUX
+	EVENT_LIB = $(wildcard ../3rd/libevent/build/linux/lib/*a)
+	INCLUED_EVENT = -I../3rd/libevent/build/linux/include
+endif
+
+ifdef MAC
+	EVENT_LIB = $(wildcard /usr/local/Cellar/libevent/2.1.8/lib/*a)
+	INCLUED_EVENT = -I/usr/local/Cellar/libevent/2.1.8/include
+endif
+
+CFLAGS += $(INCLUED_EVENT)
+
 TARGET = ../lib/libcommon.a
 
-LIB_EVENT = $(wildcard ../3rd/libevent/build/linux/lib/*a)
+
 
 SOURCES = $(wildcard *.cpp) $(wildcard network/*.cpp)
 
-OBJS = $(SOURCES:%.cpp=objs/%.o) $(LIB_EVENT)
+OBJS = $(SOURCES:%.cpp=objs/%.o) $(EVENT_LIB)
 DEPS = $(SOURCES:%.cpp=objs/%.d)
 
 default : $(TARGET)

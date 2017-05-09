@@ -51,7 +51,7 @@ int BaseServer::Run()
 }
 void BaseServer::OnAccept(SOCKET client)
 {
-	printf("current client count:%d\n", all_clients.size());
+	printf("current client count:%lu\n", all_clients.size());
 	auto c = GetEmptyConnection();
 	c->SetSocketEvent(client);
 }
