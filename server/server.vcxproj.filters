@@ -16,27 +16,33 @@
     <Filter Include="src">
       <UniqueIdentifier>{95cb8bc2-7937-4df6-9a09-25e0493f1cc8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="network">
-      <UniqueIdentifier>{ae01d7e9-4672-4ae4-8dd5-45a3899e401a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\common">
       <UniqueIdentifier>{d6fbee1f-265d-4637-a06d-b229bab4285b}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\common\network">
       <UniqueIdentifier>{c6e183e7-54e3-4cd5-9823-a5c99ca2fd97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\test_server">
+      <UniqueIdentifier>{e08c4244-cbce-4d20-af15-2f7c54bd7260}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\common\network\NetwrokStream.cpp">
-      <Filter>src\common\network</Filter>
-    </ClCompile>
     <ClCompile Include="src\common\network\TcpConnection.cpp">
       <Filter>src\common\network</Filter>
     </ClCompile>
-    <ClCompile Include="src\common\event.cpp">
+    <ClCompile Include="src\test_server\test_server.cpp">
+      <Filter>src\test_server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\common\BaseServer.cpp">
+      <Filter>src\common</Filter>
+    </ClCompile>
+    <ClCompile Include="src\common\network\NetworkStream.cpp">
+      <Filter>src\common\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\common\event_ext.cpp">
       <Filter>src\common</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,14 +50,23 @@
     <ClInclude Include="src\common\common.h">
       <Filter>src\common</Filter>
     </ClInclude>
-    <ClInclude Include="src\common\event.h">
-      <Filter>src\common</Filter>
-    </ClInclude>
-    <ClInclude Include="src\common\network\NetwrokStream.h">
-      <Filter>src\common\network</Filter>
-    </ClInclude>
     <ClInclude Include="src\common\network\TcpConnection.h">
       <Filter>src\common\network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\test_server\test_server.h">
+      <Filter>src\test_server</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\BaseServer.h">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\network\NetworkStream.h">
+      <Filter>src\common\network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\define.h">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\event_ext.h">
+      <Filter>src\common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -29,8 +29,8 @@ OTHER_OBJS=test-init.obj test-eof.obj test-closed.obj test-weof.obj test-time.ob
 
 PROGRAMS=regress.exe \
 	test-init.exe test-eof.exe test-closed.exe test-weof.exe test-time.exe \
-	test-changelist.exe \
-	print-winsock-errors.exe
+	test-changelist.exe 
+#	print-winsock-errors.exe
 
 # Disabled for now:
 #	bench.exe bench_cascade.exe bench_http.exe bench_httpclient.exe
@@ -56,8 +56,8 @@ test-weof.exe: test-weof.obj
 test-time.exe: test-time.obj
 	$(CC) $(CFLAGS) $(LIBS) test-time.obj
 
-print-winsock-errors.exe: print-winsock-errors.obj
-	$(CC) $(CFLAGS) $(LIBS) print-winsock-errors.obj
+#print-winsock-errors.exe: print-winsock-errors.obj
+#	$(CC) $(CFLAGS) $(LIBS) print-winsock-errors.obj
 
 bench.exe: bench.obj
 	$(CC) $(CFLAGS) $(LIBS) bench.obj
