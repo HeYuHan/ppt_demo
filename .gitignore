@@ -245,3 +245,7 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+
+*.Plo
+
+*.lo
