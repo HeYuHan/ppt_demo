@@ -11,7 +11,8 @@ endif
 EVENT_LIB = $(wildcard ../3rd/libevent/*.a)
 INCLUED_EVENT= -I../3rd/libevent/include
 
-ifdef MAC
+#mac
+ifeq ($(shell uname), Darwin)
 	EVENT_LIB = $(wildcard /usr/local/Cellar/libevent/2.1.8/lib/*a)
 	INCLUED_EVENT = -I/usr/local/Cellar/libevent/2.1.8/include
 endif
@@ -30,6 +31,7 @@ DEPS = $(SOURCES:%.cpp=objs/%.d)
 
 default : $(TARGET)
 rebuild : clean default
+
 
 objs/%.d: %.cpp | dircheck
 	@$(CC) -MM $(CFLAGS) $< | sed 's,\($*\)\.o[ :]*,objs/\1.o $@ : ,g' >$@

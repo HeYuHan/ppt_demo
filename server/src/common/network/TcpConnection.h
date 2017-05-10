@@ -25,6 +25,9 @@ public:
 	SOCKET m_Socket;
 	sockaddr_in m_Addr;
 	uint uid;
+private:
+	void ReadMessage();
+	void WriteMessage();
 public: 
 	void OnMessage();
 	void OnRead();

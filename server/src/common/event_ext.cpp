@@ -29,14 +29,12 @@ void Event::Terminate()
 	event_base_free(base);
 	base = nullptr;
 }
-int Event::AddTimer(event_callback_fn cb, void *arg, long sec, long mic /* = 0 */)
+int Event::AddTimer(struct event &timer_ev,event_callback_fn cb, void *arg, long mic /* = 0 */)
 {
-	
-	struct event timer_ev;
-	evtimer_set(&timer_ev, cb, arg);
+	event_assign(&timer_ev, base, -1,  0, cb, arg);
 	timeval tv;
-	tv.tv_sec = sec;
-	tv.tv_usec = mic;
+	tv.tv_sec = mic/1000;
+	tv.tv_usec = mic-tv.tv_sec;
 	return evtimer_add(&timer_ev, &tv);
 }
 
@@ -88,7 +86,7 @@ struct event* Event::AddSocket(SOCKET listener, short event, ISocketEvent *handl
 	{
 		return listen_ev;
 	}
-	
+	event_free(listen_ev);
 	return nullptr;
 }
 struct bufferevent* Event::AddBuffer(SOCKET socket, short event, ISocketEvent *handle)
@@ -96,6 +94,7 @@ struct bufferevent* Event::AddBuffer(SOCKET socket, short event, ISocketEvent *h
 	struct bufferevent *bev;
 	evutil_make_socket_nonblocking(socket);
 	bev = bufferevent_socket_new(base, socket, BEV_OPT_CLOSE_ON_FREE);
+	if(!bev)return nullptr;
 	bufferevent_setcb(bev, OnBufferRead, OnBufferWrite, OnBufferEvent, handle);
 	if (bufferevent_enable(bev, event) == 0)
 	{

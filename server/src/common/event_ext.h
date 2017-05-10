@@ -29,7 +29,7 @@ public:
 	static bool Initialize();
 	static int Dispatch();
 	static void Terminate();
-	static int AddTimer(event_callback_fn cb,void *arg, long sec, long mic = 0);
+	static int AddTimer(struct event &timer_ev,event_callback_fn cb,void *arg,long mic);
 	static SocketEvent* AddSocket(SOCKET listener, short event,ISocketEvent *handle);
 	static BufferEvent* AddBuffer(SOCKET socket, short event, ISocketEvent *handle);
 	static int RemoveSocket(struct event* e);

@@ -23,6 +23,7 @@ public:
 protected:
 	ObjectPool<TcpConnection> client_pool;
 	std::map<uint,TcpConnection*> all_clients;
+
 };
 extern BaseServer gServer;
 

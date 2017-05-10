@@ -10,19 +10,24 @@ TcpConnection::~TcpConnection()
 {
 
 }
-void TcpConnection::OnRead()
+void TcpConnection::WriteMessage()
 {
-	//revc data
-	struct evbuffer *input = bufferevent_get_input(m_BufferEvent);
-	char* start = read_end;
-	char* end = read_buff + read_buff_len;
-	int data_len = 0;
-	while ((data_len = evbuffer_get_length(input)) && (end - start) > data_len)
+	if (m_BufferEvent&&send_position&&send_end)
 	{
-		start += evbuffer_remove(input, start, end - start);
-		read_end = start;
-	}
+		int data_len = send_end - send_position;
+		if (data_len > 0)
+		{
+			struct evbuffer *output = bufferevent_get_output(m_BufferEvent);
+			if (evbuffer_add(output, send_position, data_len) == 0)
+			{
+				send_position += data_len;
+			}
+		}
 
+	}
+}
+void TcpConnection::ReadMessage()
+{
 	//parse data
 	while (true)
 	{
@@ -52,24 +57,26 @@ void TcpConnection::OnRead()
 	read_position = read_buff;
 	read_end = read_buff + unread_len;
 }
+void TcpConnection::OnRead()
+{
+	//revc data
+	struct evbuffer *input = bufferevent_get_input(m_BufferEvent);
+	char* start = read_end;
+	char* end = read_buff + read_buff_len;
+	int data_len = 0;
+	while ((data_len = evbuffer_get_length(input)) && (end - start) > data_len)
+	{
+		start += evbuffer_remove(input, start, end - start);
+		read_end = start;
+	}
+}
 void TcpConnection::OnWrite()
 {
-	if (m_BufferEvent&&send_position&&send_end)
-	{
-		int data_len = send_end - send_position;
-		if (data_len > 0)
-		{
-			struct evbuffer *output = bufferevent_get_output(m_BufferEvent);
-			if (evbuffer_add(output, send_position, data_len) == 0)
-			{
-				send_position += data_len;
-			}
-		}
-
-	}
+	
 }
 void TcpConnection::Close()
 {
+	printf("client close fd:%d\n",m_Socket);
 	gServer.RemoveClient(this);
 	Reset();
 	FreeBufferEvent();
@@ -107,7 +114,6 @@ void TcpConnection::FreeBufferEvent()
 {
 	if (m_BufferEvent)
 	{
-		bufferevent_disable(m_BufferEvent, EV_READ | EV_WRITE);
 		bufferevent_free(m_BufferEvent);
 		m_BufferEvent = nullptr;
 	}
@@ -126,7 +132,8 @@ void TcpConnection::Update()
 {
 	if (m_State == S_Connected)
 	{
-		OnWrite();
+		ReadMessage();
+		WriteMessage();
 	}
 
 }
