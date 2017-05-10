@@ -45,8 +45,8 @@ void Event::OnSocketEvent(evutil_socket_t listener, short event, void* arg)
 	ISocketEvent* handle = static_cast<ISocketEvent*>(arg);
 	if (handle)
 	{
-		if (event&&EV_READ)handle->OnRead();
-		if (event&&EV_WRITE)handle->OnWrite();
+		if (event&EV_READ)handle->OnRead();
+		if (event&EV_WRITE)handle->OnWrite();
 	}
 }
 void Event::OnBufferEvent(struct bufferevent *bev, short event,void *arg)
