@@ -5,6 +5,7 @@ client/Library/*
 
 # User-specific files
 server/src/3rd/libevent/.deps/
+server/src/lib/
 *.o
 *.d
 *.suo
