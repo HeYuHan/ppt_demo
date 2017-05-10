@@ -7,20 +7,12 @@
 typedef bufferevent BufferEvent;
 typedef event TimerEvent, SocketEvent;
 class NetworkStream;
-struct ISocket
+struct ISocketEvent
 {
-	virtual void OnClose() {};
-	virtual void OnError(short e) {};
-};
-struct IServerSocket:public ISocket
-{
-	virtual void OnAccept(SOCKET client) {};
-};
-struct IClientSocket:public ISocket
-{
-	virtual void OnRead() {};
-	virtual void OnWrite() {};
-	virtual NetworkStream* GetStream() { return nullptr; };
+	virtual void OnClose() = 0;
+	virtual void OnRead() = 0;
+	virtual void OnWrite() = 0;
+	virtual void OnError(short e) = 0;
 };
 class Event
 {
@@ -28,21 +20,20 @@ private:
 	Event();
 	~Event();
 private:
-	static void AcceptCallBack(evutil_socket_t listener, short event, void* arg);
-	static void ReadCallBack(struct bufferevent *bev, void *arg);
-	static void ErrorCallBack(struct bufferevent *bev, short error, void *arg);
-	static void WriteCallBack(struct bufferevent *bev, void *arg);
+	static void OnSocketEvent(evutil_socket_t listener, short event, void* arg);
+	static void OnBufferEvent(struct bufferevent *bev, short event, void *arg);
+	static void OnBufferRead(struct bufferevent *bev, void *arg);
+	static void OnBufferWrite(struct bufferevent *bev, void *arg);
 	
 public:
 	static bool Initialize();
 	static int Dispatch();
 	static void Terminate();
-	static TimerEvent* AddTimer(event_callback_fn cb,void *arg, long sec, long mic = 0);
-	static int AddTimer(TimerEvent* e, long sec, long mic=0);
-	static SocketEvent* AccpetSocket(SOCKET listener, IServerSocket *handle);
-	static BufferEvent* ListenSocket(SOCKET socket, IClientSocket *handle);
-	static int RemoveEvent(struct event* e);
-	static int RemoveBufferEvent(BufferEvent* e);
+	static int AddTimer(event_callback_fn cb,void *arg, long sec, long mic = 0);
+	static SocketEvent* AddSocket(SOCKET listener, short event,ISocketEvent *handle);
+	static BufferEvent* AddBuffer(SOCKET socket, short event, ISocketEvent *handle);
+	static int RemoveSocket(struct event* e);
+	static int RemoveBuffer(BufferEvent* e);
 };
 
 

@@ -1,19 +1,18 @@
 TcpConnection.o: network/TcpConnection.cpp network/TcpConnection.h \
-  network/../event_ext.h \
-  /usr/local/Cellar/libevent/2.1.8/include/event.h \
-  /usr/local/Cellar/libevent/2.1.8/include/event2/event-config.h \
-  /usr/local/Cellar/libevent/2.1.8/include/evutil.h \
-  /usr/local/Cellar/libevent/2.1.8/include/event2/util.h \
-  /usr/local/Cellar/libevent/2.1.8/include/event2/visibility.h \
-  /usr/local/Cellar/libevent/2.1.8/include/event2/event_struct.h \
-  /usr/local/Cellar/libevent/2.1.8/include/event2/keyvalq_struct.h \
-  /usr/local/Cellar/libevent/2.1.8/include/event2/event.h \
-  /usr/local/Cellar/libevent/2.1.8/include/event2/event_compat.h \
-  /usr/local/Cellar/libevent/2.1.8/include/event2/buffer.h \
-  /usr/local/Cellar/libevent/2.1.8/include/event2/buffer_compat.h \
-  /usr/local/Cellar/libevent/2.1.8/include/event2/bufferevent.h \
-  /usr/local/Cellar/libevent/2.1.8/include/event2/bufferevent_struct.h \
-  /usr/local/Cellar/libevent/2.1.8/include/event2/bufferevent_compat.h \
-  /usr/local/Cellar/libevent/2.1.8/include/event2/tag.h \
-  /usr/local/Cellar/libevent/2.1.8/include/event2/tag_compat.h define.h \
-  network/NetworkStream.h network/../common.h
+ network/../event_ext.h ../3rd/libevent/include/event.h \
+ ../3rd/libevent/include/event2/event-config.h \
+ ../3rd/libevent/include/evutil.h ../3rd/libevent/include/event2/util.h \
+ ../3rd/libevent/include/event2/visibility.h \
+ ../3rd/libevent/include/event2/event_struct.h \
+ ../3rd/libevent/include/event2/keyvalq_struct.h \
+ ../3rd/libevent/include/event2/event.h \
+ ../3rd/libevent/include/event2/event_compat.h \
+ ../3rd/libevent/include/event2/buffer.h \
+ ../3rd/libevent/include/event2/buffer_compat.h \
+ ../3rd/libevent/include/event2/bufferevent.h \
+ ../3rd/libevent/include/event2/bufferevent_struct.h \
+ ../3rd/libevent/include/event2/bufferevent_compat.h \
+ ../3rd/libevent/include/event2/tag.h \
+ ../3rd/libevent/include/event2/tag_compat.h network/../define.h \
+ network/NetworkStream.h network/../common.h network/../BaseServer.h \
+ network/../objectpool.h network/../network/TcpListener.h

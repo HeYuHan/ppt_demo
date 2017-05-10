@@ -29,87 +29,61 @@ void Event::Terminate()
 	event_base_free(base);
 	base = nullptr;
 }
-TimerEvent* Event::AddTimer(event_callback_fn cb, void *arg, long sec, long mic /* = 0 */)
+int Event::AddTimer(event_callback_fn cb, void *arg, long sec, long mic /* = 0 */)
 {
 	
-	struct event *timer_ev = evtimer_new(base, cb, arg);
-	AddTimer(timer_ev, sec,mic);
-	return timer_ev;
-}
-int Event::AddTimer(TimerEvent* e, long sec, long mic/* =0 */)
-{
+	struct event timer_ev;
+	evtimer_set(&timer_ev, cb, arg);
 	timeval tv;
 	tv.tv_sec = sec;
 	tv.tv_usec = mic;
-	return evtimer_add(e, &tv);
+	return evtimer_add(&timer_ev, &tv);
 }
-void Event::AcceptCallBack(evutil_socket_t listener, short event, void* arg)
-{
-	
-	struct sockaddr_in ss;
-	socklen_t slen = sizeof(ss);
-	int fd = accept(listener, (struct sockaddr*)&ss, &slen);
-	char msg[128] = { 0 };
-	sprintf(msg, "fd size error:%d", fd);
-	if (fd < 0)
-	{
-		perror("do_accept error");
-	}
-	else if (fd > FD_SETSIZE)
-	{
-		evutil_closesocket(fd);
-		perror(msg);
-	}
-	else
-	{
-		IServerSocket* handle = static_cast<IServerSocket*>(arg);
-		if (handle) 
-		{
-			handle->OnAccept(fd);
-		}
-		else
-		{
-			evutil_closesocket(fd);
-		}
-	}
-}
-void Event::ReadCallBack(struct bufferevent *bev, void *arg)
-{
-	struct evbuffer *input;
-	input = bufferevent_get_input(bev);
-	IClientSocket* handle = static_cast<IClientSocket*>(arg);
-	if (handle)
-	{
-		NetworkStream* stream = handle->GetStream();
-		char* start = stream->read_end;
-		char* end = stream->read_buff+stream->read_buff_len;
-		int data_len = 0;
-		while ((data_len = evbuffer_get_length(input))&&(end-start)>data_len)
-		{
-			start += evbuffer_remove(input, start, end - start);
-			stream->read_end = start;
-		}
-	}
-	
-}
-void Event::ErrorCallBack(struct bufferevent *bev, short error, void *arg)
-{
-	
-	
-	ISocket* handle = static_cast<ISocket*>(arg);
-	if (handle)
-	{
-		handle->OnError(error);
-	}
-	
-}
-void Event::WriteCallBack(struct bufferevent *bev, void *arg)
-{
 
-}
-struct event* Event::AccpetSocket(SOCKET listener,IServerSocket *handle)
+void Event::OnSocketEvent(evutil_socket_t listener, short event, void* arg)
 {
-	struct event *listen_ev = event_new(base, listener, EV_READ | EV_PERSIST, AcceptCallBack, handle);
+	ISocketEvent* handle = static_cast<ISocketEvent*>(arg);
+	if (handle)
+	{
+		if (event&&EV_READ)handle->OnRead();
+		if (event&&EV_WRITE)handle->OnWrite();
+	}
+}
+void Event::OnBufferEvent(struct bufferevent *bev, short event,void *arg)
+{
+	ISocketEvent* handle = static_cast<ISocketEvent*>(arg);
+	if (handle)
+	{
+		if (event & BEV_EVENT_EOF) {
+			handle->OnClose();
+		}
+		else if (event & BEV_EVENT_ERROR) {
+			handle->OnError(BEV_EVENT_ERROR);
+		}
+		else if (event & BEV_EVENT_TIMEOUT) {
+			handle->OnError(BEV_EVENT_TIMEOUT);
+		}
+	}
+}
+void Event::OnBufferRead(struct bufferevent *bev, void *arg)
+{
+	ISocketEvent* handle = static_cast<ISocketEvent*>(arg);
+	if (handle)
+	{
+		handle->OnRead();
+	}
+}
+void Event::OnBufferWrite(struct bufferevent *bev, void *arg)
+{
+	ISocketEvent* handle = static_cast<ISocketEvent*>(arg);
+	if (handle)
+	{
+		handle->OnWrite();
+	}
+}
+struct event* Event::AddSocket(SOCKET listener, short event, ISocketEvent *handle)
+{
+	struct event *listen_ev = event_new(base, listener, EV_READ | EV_PERSIST, OnSocketEvent, handle);
 	if (event_add(listen_ev, nullptr) == 0)
 	{
 		return listen_ev;
@@ -117,26 +91,26 @@ struct event* Event::AccpetSocket(SOCKET listener,IServerSocket *handle)
 	
 	return nullptr;
 }
-struct bufferevent* Event::ListenSocket(SOCKET socket,IClientSocket *handle)
+struct bufferevent* Event::AddBuffer(SOCKET socket, short event, ISocketEvent *handle)
 {
 	struct bufferevent *bev;
 	evutil_make_socket_nonblocking(socket);
 	bev = bufferevent_socket_new(base, socket, BEV_OPT_CLOSE_ON_FREE);
-	bufferevent_setcb(bev, ReadCallBack, WriteCallBack, ErrorCallBack, handle);
-	if (bufferevent_enable(bev, EV_READ | EV_WRITE) == 0)
+	bufferevent_setcb(bev, OnBufferRead, OnBufferWrite, OnBufferEvent, handle);
+	if (bufferevent_enable(bev, event) == 0)
 	{
 		return bev;
 	}
 	bufferevent_free(bev);
 	return nullptr;
 }
-int Event::RemoveEvent(struct event* e)
+int Event::RemoveSocket(struct event* e)
 {
 	int i = event_del(e);
 	event_free(e);
 	return i;
 }
-int Event::RemoveBufferEvent(BufferEvent* e)
+int Event::RemoveBuffer(BufferEvent* e)
 {
 	int i = bufferevent_disable(e, EV_READ | EV_WRITE);
 	bufferevent_free(e);

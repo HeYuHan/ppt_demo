@@ -8,13 +8,8 @@ else
 	CFLAGS += -Wall -Werror -g -DDEBUG
 endif
 
-EVENT_LIB = $(wildcard ../3rd/libevent/build/linux/lib/*a)
-INCLUED_EVENT= 
-
-ifdef LINUX
-	EVENT_LIB = $(wildcard ../3rd/libevent/build/linux/lib/*a)
-	INCLUED_EVENT = -I../3rd/libevent/build/linux/include
-endif
+EVENT_LIB = $(wildcard ../3rd/libevent/*.a)
+INCLUED_EVENT= -I../3rd/libevent/include
 
 ifdef MAC
 	EVENT_LIB = $(wildcard /usr/local/Cellar/libevent/2.1.8/lib/*a)
@@ -32,19 +27,25 @@ SOURCES = $(wildcard *.cpp) $(wildcard network/*.cpp)
 OBJS = $(SOURCES:%.cpp=objs/%.o) $(EVENT_LIB)
 DEPS = $(SOURCES:%.cpp=objs/%.d)
 
+
 default : $(TARGET)
 rebuild : clean default
 
-objs/%.d: %.cpp
+objs/%.d: %.cpp | dircheck
 	@$(CC) -MM $(CFLAGS) $< | sed 's,\($*\)\.o[ :]*,objs/\1.o $@ : ,g' >$@
 
 objs/%.o: %.cpp
 	$(CC) $(CFLAGS) -o $@ $<
 
+dircheck:
+	python ../checkdir.py
+
 -include $(DEPS)
 
+
 clean :
-	rm -rf $(TARGET) objs/*.d objs/*.o objs/network/*
+	rm -rf $(TARGET) objs
+
 	
 $(TARGET) : $(OBJS)
 	$(AR) rcs $@ $(OBJS)

@@ -1,6 +1,6 @@
 #libevent pkg-config source file
 
-prefix=/Users/heyuhan/Desktop/ppt_demo/server/src/3rd/libevent/build/mac
+prefix=/usr/local
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
@@ -11,6 +11,6 @@ Version: 2.1.8-stable
 Requires: libevent
 Conflicts:
 Libs: -L${libdir} -levent_pthreads
-Libs.private:  
-Cflags: -I${includedir} -D_THREAD_SAFE 
+Libs.private: -lrt  
+Cflags: -I${includedir} -pthread
 

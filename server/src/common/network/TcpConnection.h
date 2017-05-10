@@ -10,7 +10,7 @@ enum TcpState
 	S_Idle=0,S_Connected,S_Destory
 };
 
-class TcpConnection:public IClientSocket,public NetworkStream
+class TcpConnection:public ISocketEvent,public NetworkStream
 {
 public:
 	TcpConnection();
@@ -23,8 +23,9 @@ public:
 	TcpState m_State;
 	BufferEvent* m_BufferEvent;
 	SOCKET m_Socket;
+	sockaddr_in m_Addr;
+	uint uid;
 public: 
-	NetworkStream* GetStream();
 	void OnMessage();
 	void OnRead();
 	void OnWrite();
@@ -33,7 +34,7 @@ public:
 	void OnConnected();
 	void Disconnect();
 	void Close();
-	void SetSocketEvent(SOCKET socket);
+	void SetSocketEvent(SOCKET socket, sockaddr_in addr);
 	bool Initialize();
 	void FreeBufferEvent();
 	void Reset();

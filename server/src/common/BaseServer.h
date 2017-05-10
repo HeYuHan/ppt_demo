@@ -1,25 +1,28 @@
 #pragma once
-#include "common.h"
 #include <vector>
+#include "objectpool.h"
+#include "network/TcpListener.h"
+#include <map>
 class TcpConnection;
-class BaseServer:public IServerSocket
+class TcpListener;
+class BaseServer:public TcpListener
 {
 public:
 	BaseServer();
 	~BaseServer();
+protected:
+	virtual void OnClientConnected(int socket, sockaddr_in addr);
 public:
-	bool Listen(int port = 0);
-	void OnAccept(SOCKET client);
 	void OnClose();
 	void OnError(short e);
 	virtual int Run();
 	virtual bool Initialize();
-	void Update();
-private:
-	TcpConnection* GetEmptyConnection();
-public:
-	SOCKET m_Socket;
-	std::vector<TcpConnection*> all_clients;
+	static void Update(evutil_socket_t, short, void *);
+	void RemoveClient(TcpConnection* client);
+	void UpdateClients();
+protected:
+	ObjectPool<TcpConnection> client_pool;
+	std::map<uint,TcpConnection*> all_clients;
 };
 extern BaseServer gServer;
 

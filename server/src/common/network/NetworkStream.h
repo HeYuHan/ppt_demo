@@ -12,7 +12,7 @@ class NetworkStream
 public:
 	NetworkStream();
 	~NetworkStream();
-public:
+protected:
 	char* write_buff;
 	char* read_buff;
 	char* write_position;

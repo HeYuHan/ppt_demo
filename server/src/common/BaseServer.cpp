@@ -1,59 +1,41 @@
 #include "BaseServer.h"
 #include "network/TcpConnection.h"
 BaseServer gServer;
-BaseServer::BaseServer():
-	m_Socket(INVALID_SOCKET)
+BaseServer::BaseServer()
 {
 }
 
 BaseServer::~BaseServer()
 {
 }
-TimerEvent* m_UpdateEvent = nullptr;
-void ServerUpdate(evutil_socket_t t, short s, void *arg)
+void BaseServer::Update(evutil_socket_t t, short e, void *arg)
 {
-	gServer.Update();
-	Event::AddTimer(m_UpdateEvent, 0);
+	gServer.UpdateClients();
+	Event::AddTimer(Update, arg, 1);
 }
-void BaseServer::Update()
+void BaseServer::OnClientConnected(int socket, sockaddr_in addr)
 {
-	for (TcpConnection* c : all_clients)
-	{
-		c->Update();
-	}
+	
+	auto c = client_pool.Allocate();
+	if (c)
+		c->SetSocketEvent(socket, addr);
+	all_clients.insert(std::map<uint, TcpConnection*>::value_type(c->uid, c));
+	printf("current client:%d\n", client_pool.Count());
 }
 bool BaseServer::Initialize()
 {
-	Event::Initialize();
-	m_UpdateEvent=Event::AddTimer(ServerUpdate, nullptr, 0);
+	if (!Event::Initialize())return false;
+	if (!client_pool.Initialize(1024 * 10))return false;
+	addr.sin_family = AF_INET;
+	addr.sin_addr.s_addr = 0;
+	addr.sin_port = htons(9595);
+	if (!TcpListener::Initialize())return false;
+	BaseServer::Update(-1,0,NULL);
 	return true;
-}
-TcpConnection* BaseServer::GetEmptyConnection()
-{
-	for (TcpConnection* c : all_clients)
-	{
-		if (c->m_State != TcpState::S_Connected)
-		{
-			return c;
-		}
-	}
-	TcpConnection* tcp = TcpConnection::Create();
-	if (tcp)
-	{
-		all_clients.push_back(tcp);
-		return tcp;
-	}
-	return nullptr;
 }
 int BaseServer::Run()
 {
 	return Event::Dispatch();
-}
-void BaseServer::OnAccept(SOCKET client)
-{
-	printf("current client count:%lu\n", all_clients.size());
-	auto c = GetEmptyConnection();
-	c->SetSocketEvent(client);
 }
 void BaseServer::OnClose()
 {
@@ -63,28 +45,15 @@ void BaseServer::OnError(short e)
 {
 
 }
-bool BaseServer::Listen(int port /* = 0 */)
+void BaseServer::RemoveClient(TcpConnection* client)
 {
-	sockaddr_in sin;
-	sin.sin_family = AF_INET;
-	sin.sin_addr.s_addr = 0;
-	sin.sin_port = htons(9595);
-	m_Socket = socket(AF_INET, SOCK_STREAM, 0);
-	evutil_make_socket_nonblocking(m_Socket);
-#ifdef WIN32
-	int reuseadd_on = 1;
-	setsockopt(m_Socket, SOL_SOCKET, SO_REUSEADDR, (char*)&reuseadd_on, sizeof(reuseadd_on));
-#endif
-	if (bind(m_Socket, (struct sockaddr*)&sin, sizeof(sin)) < 0)
+	client_pool.Free(client->uid);
+	all_clients.erase(client->uid);
+}
+void BaseServer::UpdateClients()
+{
+	for (auto iter : all_clients)
 	{
-		perror("bind error");
-		return false;
+		iter.second->Update();
 	}
-	if (listen(m_Socket, 20))
-	{
-		perror("listen");
-		return false;
-	}
-	Event::AccpetSocket(m_Socket, this);
-	return true;
 }

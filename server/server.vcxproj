@@ -23,6 +23,7 @@
     <ClCompile Include="src\common\event_ext.cpp" />
     <ClCompile Include="src\common\network\NetworkStream.cpp" />
     <ClCompile Include="src\common\network\TcpConnection.cpp" />
+    <ClCompile Include="src\common\network\TcpListener.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\test_server\test_server.cpp" />
   </ItemGroup>
@@ -33,6 +34,8 @@
     <ClInclude Include="src\common\event_ext.h" />
     <ClInclude Include="src\common\network\NetworkStream.h" />
     <ClInclude Include="src\common\network\TcpConnection.h" />
+    <ClInclude Include="src\common\network\TcpListener.h" />
+    <ClInclude Include="src\common\objectpool.h" />
     <ClInclude Include="src\test_server\test_server.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -98,7 +101,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)..\server\src\3rd\libevent\WIN32-Code\nmake;$(SolutionDir)..\server\src\3rd\libevent\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>$(SolutionDir)..\server\src\lib\windows\libevent.lib;$(SolutionDir)..\server\src\lib\windows\libevent_core.lib;$(SolutionDir)..\server\src\lib\windows\libevent_extras.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)..\server\src\3rd\libevent\libevent.lib;$(SolutionDir)..\server\src\3rd\libevent\libevent_core.lib;$(SolutionDir)..\server\src\3rd\libevent\libevent_extras.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

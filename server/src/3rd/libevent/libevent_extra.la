@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/home/hlx_window_share/ppt_demo/server/src/3rd/libevent/build/linux/lib'
+libdir='/usr/local/lib'

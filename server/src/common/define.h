@@ -17,9 +17,9 @@ typedef unsigned int uint;
 
 #ifdef FD_SETSIZE
 #undef FD_SETSIZE
-#define FD_SETSIZE 2048
+#define FD_SETSIZE 655350
 #else
-#define FD_SETSIZE 2048
+#define FD_SETSIZE 1024
 #endif
 
 #ifndef WIN32

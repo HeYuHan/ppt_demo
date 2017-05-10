@@ -45,6 +45,9 @@
     <ClCompile Include="src\common\event_ext.cpp">
       <Filter>src\common</Filter>
     </ClCompile>
+    <ClCompile Include="src\common\network\TcpListener.cpp">
+      <Filter>src\common\network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\common\common.h">
@@ -67,6 +70,12 @@
     </ClInclude>
     <ClInclude Include="src\common\event_ext.h">
       <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\objectpool.h">
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common\network\TcpListener.h">
+      <Filter>src\common\network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
