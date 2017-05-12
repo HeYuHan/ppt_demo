@@ -1,0 +1,9 @@
+{
+  "name": "server_test",
+  "version": "0.0.0",
+  "description": "server_test",
+  "main": "app.js",
+  "author": {
+    "name": "HeLiXia"
+  }
+}
