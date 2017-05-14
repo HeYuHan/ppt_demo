@@ -111,15 +111,6 @@ void TcpConnection::FreeBufferEvent()
 	}
 
 }
-void TcpConnection::OnMessage()
-{
-	char msg[128] = { 0 };
-	ReadString(msg,128);
-	printf("client msg:%s FD=%d\n", msg,m_Socket);
-	BeginWrite();
-	WriteString("hello client");
-	EndWrite();
-}
 void TcpConnection::Update()
 {
 	if (m_State == S_Connected)
@@ -127,10 +118,6 @@ void TcpConnection::Update()
 		ReadMessage();
 		WriteMessage();
 	}
-
-}
-void TcpConnection::OnDisconnect()
-{
 
 }
 void TcpConnection::Disconnect()
@@ -159,6 +146,23 @@ bool TcpConnection::Initialize()
 {
 	Reset();
 	return true;
+}
+void TcpConnection::OnConnected()
+{
+
+}
+void TcpConnection::OnDisconnect()
+{
+
+}
+void TcpConnection::OnMessage()
+{
+	char msg[128] = { 0 };
+	ReadString(msg,128);
+	printf("client msg:%s FD=%d\n", msg,m_Socket);
+	BeginWrite();
+	WriteString("hello client");
+	EndWrite();
 }
 TcpConnection* TcpConnection::Create()
 {

@@ -5,24 +5,32 @@
             "name": "C++ Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "enter program name, for example ${workspaceRoot}/a.out",
+            "program": "${workspaceRoot}/bin/test_server",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
             "environment": [],
-            "externalConsole": true,
+            "externalConsole": false,
+            "preLaunchTask": "sh",
             "linux": {
                 "MIMode": "gdb",
                 "setupCommands": [
                     {
                         "description": "Enable pretty-printing for gdb",
-                        "text": "-enable-pretty-printing",
+                        "text": "pwd",
                         "ignoreFailures": true
                     }
                 ]
             },
             "osx": {
-                "MIMode": "lldb"
+                "MIMode": "lldb",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "pwd",
+                        "ignoreFailures": true
+                    }
+                ]
             },
             "windows": {
                 "MIMode": "gdb",

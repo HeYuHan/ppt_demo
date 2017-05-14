@@ -33,10 +33,13 @@ private:
 	void OnClose();
 	void OnError(short e);
 	void Disconnect();
-public: 
+protected:
 	virtual void OnMessage();
 	virtual void OnConnected();
 	virtual void OnDisconnect();
+	
+public: 
+
 	void SetSocketEvent(SOCKET socket, sockaddr_in addr);
 	bool Initialize();
 	void FreeBufferEvent();
