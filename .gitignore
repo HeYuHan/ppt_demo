@@ -9,6 +9,7 @@ client/Library/*
 */.libs/
 */output/
 */.deps/
+*/.libs/
 */lib/
 *.a
 *.o
