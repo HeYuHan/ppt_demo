@@ -4,9 +4,10 @@
 client/Library/*
 
 # User-specific files
-server/output/
-server/src/3rd/libevent/.deps/
-server/src/lib/
+*/.libs/
+*/output/
+*/.deps/
+*/lib/
 *.a
 *.o
 *.d

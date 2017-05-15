@@ -145,7 +145,7 @@
 /* #undef EVENT__HAVE_KQUEUE */
 
 /* Define if the system has zlib */
-#define EVENT__HAVE_LIBZ 1
+/* #undef EVENT__HAVE_LIBZ */
 
 /* Define to 1 if you have the `mach_absolute_time' function. */
 /* #undef EVENT__HAVE_MACH_ABSOLUTE_TIME */
@@ -409,7 +409,7 @@
 /* #undef EVENT__HAVE_WORKING_KQUEUE */
 
 /* Define to 1 if you have the <zlib.h> header file. */
-#define EVENT__HAVE_ZLIB_H 1
+/* #undef EVENT__HAVE_ZLIB_H */
 
 /* Define to the sub-directory where libtool stores uninstalled libraries. */
 #define EVENT__LT_OBJDIR ".libs/"

@@ -132,7 +132,7 @@
 /* #undef HAVE_KQUEUE */
 
 /* Define if the system has zlib */
-#define HAVE_LIBZ 1
+/* #undef HAVE_LIBZ */
 
 /* Define to 1 if you have the `mach_absolute_time' function. */
 /* #undef HAVE_MACH_ABSOLUTE_TIME */
@@ -396,7 +396,7 @@
 /* #undef HAVE_WORKING_KQUEUE */
 
 /* Define to 1 if you have the <zlib.h> header file. */
-#define HAVE_ZLIB_H 1
+/* #undef HAVE_ZLIB_H */
 
 /* Define to the sub-directory where libtool stores uninstalled libraries. */
 #define LT_OBJDIR ".libs/"

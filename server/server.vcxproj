@@ -38,6 +38,9 @@
     <ClInclude Include="src\common\objectpool.h" />
     <ClInclude Include="src\test_server\test_server.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Makefile" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{374EAE30-45ED-4369-85B9-2B20C49FF660}</ProjectGuid>
     <RootNamespace>server</RootNamespace>
@@ -138,6 +141,4 @@
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
-</Project>
+  
