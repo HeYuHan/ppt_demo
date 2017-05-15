@@ -2,10 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ProtoBuf;
+using tutorial;
+using System.IO;
+
 public class Test : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        AddressBook abook = new AddressBook();
+        
+        Person p = new Person();
+        p.email = "asdfasdfsdaf";
+        p.id = 1;
+        p.name = "xxxxxx";
+
+        Person.PhoneNumber n = new Person.PhoneNumber();
+        n.number = "fffffff";
+        n.type = Person.PhoneType.HOME;
+        p.phone.Add(n);
+
+        abook.person.Add(p);
+        
+
         byte[] data = new byte[1024];
         NetworkStream s = new NetworkStream();
         s.SetSendBuffer(data,0);
@@ -16,6 +34,7 @@ public class Test : MonoBehaviour {
         s.WriteString("12345qwer哈哈哈123");
         s.WriteUInt(12345);
         s.WriteLong(long.MaxValue - 10);
+        s.WriteProtoBuf(abook);
         
         Debug.Log("send length=" + s.SendEnd);
         NetworkStream s2 = new NetworkStream();
@@ -27,7 +46,8 @@ public class Test : MonoBehaviour {
         Debug.Log(s2.ReadString());
         Debug.Log(s2.ReadUInt());
         Debug.Log(s2.ReadLong());
-        
+        AddressBook ab2=s2.ReadProtoBuf<AddressBook>();
+        return;
 	}
 	
 	// Update is called once per frame

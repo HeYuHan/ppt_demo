@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="Assets\script\ObjectPool.cs" />
     <Compile Include="Assets\script\Test.cs" />
+    <Compile Include="Assets\script\addressbook.cs" />
     <Compile Include="Assets\script\network\NetworkStream.cs" />
     <Compile Include="Assets\script\network\TcpConnection.cs" />
   </ItemGroup>

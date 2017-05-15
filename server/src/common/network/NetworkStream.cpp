@@ -38,27 +38,28 @@ void NetworkStream::SetWriteBuffer(char* buffer, int data_size,int buffer_len)
 //write data
 void NetworkStream::BeginWrite()
 {
-	send_position = write_position;
-	send_end = write_end;
 	write_position = write_end;
 	write_end += 4;
 }
 void NetworkStream::EndWrite()
 {
-	int data_len = write_end - write_position - 4;
-	if (data_len > 0)
+	int totole_len = write_end - write_position;
+	int int_len = sizeof(int);
+	if (totole_len > int_len)
 	{
-		memcpy(write_position, &data_len, 4);
-		int send_len = send_end - send_position;
-		int totle_len = send_len + data_len + 4;
-		memmove(write_buff, send_position, totle_len);
-		write_position = send_position = write_buff;
-		send_end = write_end = write_buff + totle_len;
+		int data_len = totole_len - int_len;
+		memcpy(write_position, &data_len, int_len);
+		char* start = send_position ? send_position : write_position;
+		int wait_send_len = write_end - start;
+		memmove(write_buff, start, wait_send_len);
+		send_position = write_buff;
+		send_end = send_position + wait_send_len;
+		write_position = send_position;
+		write_end = send_end;
 	}
 	else
 	{
-		write_position = send_position;
-		write_end = send_end;
+		write_end = write_position;
 	}
 }
 void NetworkStream::WirteByte(byte data)

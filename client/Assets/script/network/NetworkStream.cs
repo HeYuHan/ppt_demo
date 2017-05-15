@@ -2,15 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using ProtoBuf;
+using System.IO;
 unsafe public class NetworkStream {
 
-    byte[] send_buff = null;
+    byte[] write_buff = null;
     byte[] read_buff = null;
-    int send_position = 0;
-    int send_end = 0;
+    int write_position = 0;
+    int write_end = 0;
     int read_position = 0;
     int read_end = 0;
+    int send_position = 0;
+    int send_end = 0;
     public int ReadPosition
     {
         get { return read_position; }
@@ -21,17 +24,17 @@ unsafe public class NetworkStream {
     }
     public int SendPosition
     {
-        get { return send_position; }
+        get { return write_position; }
     }
     public int SendEnd
     {
-        get { return send_end; }
+        get { return write_end; }
     }
     public NetworkStream(int buff_size = 0)
     {
         if (buff_size > 0)
         {
-            send_buff = new byte[buff_size];
+            write_buff = new byte[buff_size];
             read_buff = new byte[buff_size];
         }
     }
@@ -43,9 +46,9 @@ unsafe public class NetworkStream {
     }
     public void SetSendBuffer(byte[] buffer, int data_size)
     {
-        send_buff = buffer;
-        send_position = 0;
-        send_end = data_size;
+        write_buff = buffer;
+        write_position = 0;
+        write_end = data_size;
     }
     static void CopyArray(byte* src, byte* dst, int count)
     {
@@ -134,6 +137,15 @@ unsafe public class NetworkStream {
         }
         return string.Empty;
     }
+    public T ReadProtoBuf<T>()where T: new()
+    {
+        using (MemoryStream ms = new MemoryStream(read_buff, read_position, read_end-read_position, false))
+        {
+            T instance = Serializer.Deserialize<T>(ms);
+            read_position += (int)ms.Position;
+            return instance;
+        }
+    }
     public void ReadData(byte[] data,int count)
     {
         fixed (byte* b_data = data)
@@ -161,6 +173,23 @@ unsafe public class NetworkStream {
 
     //////////////////////////////////////////////////////////////
     //write data
+    public void BeginWrite()
+    {
+        write_position = send_end;
+        write_end = write_position + 4;
+
+    }
+    public void EndWrite()
+    {
+        if(write_end-write_position>4)
+        {
+
+        }
+        else
+        {
+            write_end = write_position;
+        }
+    }
     public void WriteByte(byte data)
     {
         WriteData(&data, sizeof(byte));
@@ -206,6 +235,15 @@ unsafe public class NetworkStream {
             
         }
     }
+    public void WriteProtoBuf<T>(T instance)
+    {
+        using (MemoryStream ms = new MemoryStream(write_buff, write_end, write_buff.Length - write_end, true))
+        {
+            Serializer.Serialize(ms, instance);
+            write_end += (int)ms.Position;
+        }
+            
+    }
     public void WriteData(byte[] data,int count)
     {
         fixed(byte* b_data=data)
@@ -217,11 +255,11 @@ unsafe public class NetworkStream {
   
     void WriteData(void* data,int count)
     {
-        if(send_buff==null)
+        if(write_buff==null)
         {
             throw new System.Exception("send_buff==null");
         }
-        if(send_end + count > send_buff.Length)
+        if(write_end + count > write_buff.Length)
         {
             throw new System.Exception("send_end+count>send_buff.Length");
         }
@@ -229,11 +267,11 @@ unsafe public class NetworkStream {
         {
             throw new System.Exception("count<=0");
         }
-        fixed (byte* pDst = &send_buff[send_end])
+        fixed (byte* pDst = &write_buff[write_end])
         {
             CopyArray((byte*)data, pDst, count);
         }
-        send_end += count;
+        write_end += count;
     }
     
 }
