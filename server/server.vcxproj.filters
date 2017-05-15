@@ -78,4 +78,7 @@
       <Filter>src\common\network</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGro
+  <ItemGroup>
+    <None Include="src\Makefile" />
+  </ItemGroup>
+</Project>

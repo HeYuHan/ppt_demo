@@ -4,6 +4,8 @@
 client/Library/*
 
 # User-specific files
+*.tlog
+*log
 */.libs/
 */output/
 */.deps/
