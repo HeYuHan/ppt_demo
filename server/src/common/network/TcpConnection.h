@@ -14,7 +14,7 @@ class TcpConnection:public ISocketEvent,public NetworkStream
 {
 public:
 	TcpConnection();
-	~TcpConnection();
+	virtual ~TcpConnection();
 
 private:
 	char read_buffer[STREAM_BUFF_SIZE];

@@ -5,16 +5,16 @@
 # It is necessary for linking the library.
 
 # The name that we can dlopen(3).
-dlname='libevent_core-2.1.so.6'
+dlname='libevent_core-2.1.6.dylib'
 
 # Names of this library.
-library_names='libevent_core-2.1.so.6.0.2 libevent_core-2.1.so.6 libevent_core.so'
+library_names='libevent_core-2.1.6.dylib libevent_core.dylib'
 
 # The name of the static archive.
 old_library='libevent_core.a'
 
 # Linker flags that cannot go in dependency_libs.
-inherited_linker_flags=' -pthread'
+inherited_linker_flags=' '
 
 # Libraries that this one depends upon.
 dependency_libs=''

@@ -11,6 +11,6 @@ Version: 2.1.8-stable
 Requires: libevent
 Conflicts:
 Libs: -L${libdir} -levent_openssl
-Libs.private:  
+Libs.private:  -lssl -lcrypto -lz   
 Cflags: -I${includedir} 
 

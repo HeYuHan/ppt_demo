@@ -167,6 +167,7 @@ TcpConnection* TcpConnection::Create()
 	{
 		return tcp;
 	}
-	delete (tcp);
+	delete tcp;
+	tcp = nullptr;
 	return nullptr;
 }

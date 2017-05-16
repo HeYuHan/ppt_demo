@@ -114,19 +114,19 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-build_triplet = x86_64-unknown-linux-gnu
-host_triplet = x86_64-unknown-linux-gnu
+build_triplet = x86_64-apple-darwin15.6.0
+host_triplet = x86_64-apple-darwin15.6.0
 am__append_1 = libevent_pthreads.la
 am__append_2 = libevent_pthreads.pc
-#am__append_3 = libevent_openssl.la
-#am__append_4 = libevent_openssl.pc
+am__append_3 = libevent_openssl.la
+am__append_4 = libevent_openssl.pc
 noinst_PROGRAMS = $(am__EXEEXT_4) $(am__EXEEXT_6)
 EXTRA_PROGRAMS = $(am__EXEEXT_1)
 #am__append_5 = $(EVENT2_EXPORT)
-#am__append_6 = sample/le-proxy sample/https-client
-#am__append_7 = \
-#	sample/hostcheck.h \
-#	sample/openssl_hostname_validation.h
+am__append_6 = sample/le-proxy sample/https-client
+am__append_7 = \
+	sample/hostcheck.h \
+	sample/openssl_hostname_validation.h
 
 am__append_8 = $(SAMPLES)
 am__append_9 = $(TESTPROGRAMS)
@@ -134,16 +134,16 @@ am__append_10 = test/regress
 am__append_11 = test/regress.gen.c test/regress.gen.h
 am__append_12 = libevent_pthreads.la
 #am__append_13 = test/regress_iocp.c
-#am__append_14 = test/regress_ssl.c
-#am__append_15 = $(OPENSSL_INCS)
-#am__append_16 = libevent_openssl.la $(OPENSSL_LIBS) ${OPENSSL_LIBADD}
+am__append_14 = test/regress_ssl.c
+am__append_15 = $(OPENSSL_INCS)
+am__append_16 = libevent_openssl.la $(OPENSSL_LIBS) ${OPENSSL_LIBADD}
 #am__append_17 = evthread_win32.c
-am__append_18 = strlcpy.c
+#am__append_18 = strlcpy.c
 am__append_19 = select.c
 am__append_20 = poll.c
 #am__append_21 = devpoll.c
-#am__append_22 = kqueue.c
-am__append_23 = epoll.c
+am__append_22 = kqueue.c
+#am__append_23 = epoll.c
 #am__append_24 = evport.c
 am__append_25 = signal.c
 #am__append_26 = $(EVENT1_HDRS)
@@ -210,12 +210,12 @@ am__libevent_la_SOURCES_DIST = buffer.c bufferevent.c \
 	select.c poll.c devpoll.c kqueue.c epoll.c evport.c signal.c \
 	win32select.c buffer_iocp.c event_iocp.c bufferevent_async.c \
 	evthread_win32.c evdns.c event_tagging.c evrpc.c http.c
-am__objects_1 = strlcpy.lo
+#am__objects_1 = strlcpy.lo
 am__objects_2 = select.lo
 am__objects_3 = poll.lo
 #am__objects_4 = devpoll.lo
-#am__objects_5 = kqueue.lo
-am__objects_6 = epoll.lo
+am__objects_5 = kqueue.lo
+#am__objects_6 = epoll.lo
 #am__objects_7 = evport.lo
 am__objects_8 = signal.lo
 #am__objects_9 = evthread_win32.lo
@@ -273,19 +273,19 @@ libevent_extra_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	-o $@
 #am_libevent_extra_la_rpath =
 am_libevent_extra_la_rpath = -rpath $(libdir)
-#libevent_openssl_la_DEPENDENCIES =  \
-#	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_1)
+libevent_openssl_la_DEPENDENCIES =  \
+	$(am__DEPENDENCIES_2) $(am__DEPENDENCIES_1)
 am__libevent_openssl_la_SOURCES_DIST = bufferevent_openssl.c
-#am_libevent_openssl_la_OBJECTS =  \
-#	libevent_openssl_la-bufferevent_openssl.lo
+am_libevent_openssl_la_OBJECTS =  \
+	libevent_openssl_la-bufferevent_openssl.lo
 libevent_openssl_la_OBJECTS = $(am_libevent_openssl_la_OBJECTS)
 libevent_openssl_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(AM_CFLAGS) $(CFLAGS) $(libevent_openssl_la_LDFLAGS) \
 	$(LDFLAGS) -o $@
-##am_libevent_openssl_la_rpath =
-#am_libevent_openssl_la_rpath =  \
-#	-rpath $(libdir)
+#am_libevent_openssl_la_rpath =
+am_libevent_openssl_la_rpath =  \
+	-rpath $(libdir)
 libevent_pthreads_la_DEPENDENCIES =  \
 	$(am__DEPENDENCIES_2)
 am__libevent_pthreads_la_SOURCES_DIST = evthread_pthread.c
@@ -299,8 +299,8 @@ libevent_pthreads_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 am_libevent_pthreads_la_rpath =  \
 	-rpath $(libdir)
 am__EXEEXT_1 = test/regress$(EXEEXT)
-#am__EXEEXT_2 = sample/le-proxy$(EXEEXT) \
-#	sample/https-client$(EXEEXT)
+am__EXEEXT_2 = sample/le-proxy$(EXEEXT) \
+	sample/https-client$(EXEEXT)
 am__EXEEXT_3 = sample/dns-example$(EXEEXT) \
 	sample/event-read-fifo$(EXEEXT) sample/hello-world$(EXEEXT) \
 	sample/http-server$(EXEEXT) sample/http-connect$(EXEEXT) \
@@ -335,20 +335,20 @@ sample_http_server_OBJECTS = $(am_sample_http_server_OBJECTS)
 sample_http_server_DEPENDENCIES = $(am__DEPENDENCIES_1) libevent.la
 am__sample_https_client_SOURCES_DIST = sample/https-client.c \
 	sample/hostcheck.c sample/openssl_hostname_validation.c
-#am_sample_https_client_OBJECTS =  \
-#	sample/https-client.$(OBJEXT) \
-#	sample/hostcheck.$(OBJEXT) \
-#	sample/openssl_hostname_validation.$(OBJEXT)
+am_sample_https_client_OBJECTS =  \
+	sample/https-client.$(OBJEXT) \
+	sample/hostcheck.$(OBJEXT) \
+	sample/openssl_hostname_validation.$(OBJEXT)
 sample_https_client_OBJECTS = $(am_sample_https_client_OBJECTS)
-#sample_https_client_DEPENDENCIES = libevent.la \
-#	libevent_openssl.la $(am__DEPENDENCIES_1) \
-#	$(am__DEPENDENCIES_1)
+sample_https_client_DEPENDENCIES = libevent.la \
+	libevent_openssl.la $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am__sample_le_proxy_SOURCES_DIST = sample/le-proxy.c
-#am_sample_le_proxy_OBJECTS = sample/le-proxy.$(OBJEXT)
+am_sample_le_proxy_OBJECTS = sample/le-proxy.$(OBJEXT)
 sample_le_proxy_OBJECTS = $(am_sample_le_proxy_OBJECTS)
-#sample_le_proxy_DEPENDENCIES = libevent.la \
-#	libevent_openssl.la $(am__DEPENDENCIES_1) \
-#	$(am__DEPENDENCIES_1)
+sample_le_proxy_DEPENDENCIES = libevent.la \
+	libevent_openssl.la $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_sample_signal_test_OBJECTS = sample/signal-test.$(OBJEXT)
 sample_signal_test_OBJECTS = $(am_sample_signal_test_OBJECTS)
 sample_signal_test_DEPENDENCIES = $(am__DEPENDENCIES_1) libevent.la
@@ -380,12 +380,12 @@ am__test_regress_SOURCES_DIST = test/regress.c test/regress.gen.c \
 am__objects_13 = test/test_regress-regress_thread.$(OBJEXT)
 #am__objects_13 = test/test_regress-regress_thread.$(OBJEXT)
 #am__objects_13 = test/test_regress-regress_thread.$(OBJEXT)
-#am__objects_14 =  \
-#	test/test_regress-regress_zlib.$(OBJEXT)
+am__objects_14 =  \
+	test/test_regress-regress_zlib.$(OBJEXT)
 #am__objects_15 =  \
 #	test/test_regress-regress_iocp.$(OBJEXT)
-#am__objects_16 =  \
-#	test/test_regress-regress_ssl.$(OBJEXT)
+am__objects_16 =  \
+	test/test_regress-regress_ssl.$(OBJEXT)
 am_test_regress_OBJECTS = test/test_regress-regress.$(OBJEXT) \
 	test/test_regress-regress.gen.$(OBJEXT) \
 	test/test_regress-regress_buffer.$(OBJEXT) \
@@ -404,8 +404,8 @@ am_test_regress_OBJECTS = test/test_regress-regress.$(OBJEXT) \
 	$(am__objects_14) $(am__objects_15) $(am__objects_16)
 test_regress_OBJECTS = $(am_test_regress_OBJECTS)
 am__DEPENDENCIES_3 = $(am__append_12)
-#am__DEPENDENCIES_4 = libevent_openssl.la \
-#	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+am__DEPENDENCIES_4 = libevent_openssl.la \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 test_regress_DEPENDENCIES = $(am__DEPENDENCIES_1) libevent.la \
 	$(am__DEPENDENCIES_3) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_4)
@@ -769,9 +769,8 @@ am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/config.h.in \
 	$(srcdir)/libevent_extra.pc.in \
 	$(srcdir)/libevent_openssl.pc.in \
 	$(srcdir)/libevent_pthreads.pc.in $(srcdir)/sample/include.am \
-	$(srcdir)/test/include.am ChangeLog compile config.guess \
-	config.sub depcomp epoll_sub.c install-sh ltmain.sh missing \
-	test-driver
+	$(srcdir)/test/include.am compile config.guess config.sub \
+	depcomp epoll_sub.c install-sh ltmain.sh missing test-driver
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -789,27 +788,27 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = ${SHELL} /mnt/share/ppt_demo/server/src/3rd/libevent/missing aclocal-1.15
+ACLOCAL = ${SHELL} /Users/heyuhan/Desktop/ppt_demo/server/src/3rd/libevent/missing aclocal-1.15
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 0
 AR = ar
-AUTOCONF = ${SHELL} /mnt/share/ppt_demo/server/src/3rd/libevent/missing autoconf
-AUTOHEADER = ${SHELL} /mnt/share/ppt_demo/server/src/3rd/libevent/missing autoheader
-AUTOMAKE = ${SHELL} /mnt/share/ppt_demo/server/src/3rd/libevent/missing automake-1.15
-AWK = gawk
+AUTOCONF = ${SHELL} /Users/heyuhan/Desktop/ppt_demo/server/src/3rd/libevent/missing autoconf
+AUTOHEADER = ${SHELL} /Users/heyuhan/Desktop/ppt_demo/server/src/3rd/libevent/missing autoheader
+AUTOMAKE = ${SHELL} /Users/heyuhan/Desktop/ppt_demo/server/src/3rd/libevent/missing automake-1.15
+AWK = awk
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -g -O2 -Wall -fno-strict-aliasing -pthread -W -Wfloat-equal -Wundef -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wwrite-strings -Wredundant-decls -Wchar-subscripts -Wcomment -Wformat -Wwrite-strings -Wmissing-declarations -Wredundant-decls -Wnested-externs -Wbad-function-cast -Wswitch -Wno-unused-parameter -Wstrict-aliasing -Winit-self -Wmissing-field-initializers -Wdeclaration-after-statement -Waddress -Wnormalized=id -Woverride-init -Wlogical-op
+CFLAGS = -g -O2 -Wall -fno-strict-aliasing -Wno-deprecated-declarations -D_THREAD_SAFE  -W -Wfloat-equal -Wundef -Wpointer-arith -Wstrict-prototypes -Wmissing-prototypes -Wwrite-strings -Wredundant-decls -Wchar-subscripts -Wcomment -Wformat -Wwrite-strings -Wmissing-declarations -Wredundant-decls -Wnested-externs -Wbad-function-cast -Wswitch -Wno-unused-parameter -Wstrict-aliasing -Winit-self -Wmissing-field-initializers -Wdeclaration-after-statement -Waddress -Wno-unused-function -Qunused-arguments
 CPP = gcc -E
 CPPFLAGS = 
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
 DLLTOOL = false
-DSYMUTIL = 
+DSYMUTIL = dsymutil
 DUMPBIN = 
-ECHO_C = 
-ECHO_N = -n
+ECHO_C = \c
+ECHO_N = 
 ECHO_T = 
 EGREP = /usr/bin/grep -E
 EV_LIB_GDI = 
@@ -817,34 +816,34 @@ EV_LIB_WS32 =
 EXEEXT = 
 FGREP = /usr/bin/grep -F
 GREP = /usr/bin/grep
-INSTALL = /usr/bin/install -c
+INSTALL = /usr/local/bin/ginstall -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
-LD = /usr/bin/ld -m elf_x86_64
+LD = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld
 LDFLAGS = 
 LIBEVENT_GC_SECTIONS = 
 LIBOBJS = 
 LIBS = 
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LIBTOOL_DEPS = ./ltmain.sh
-LIPO = 
-LN_S = ln
+LIPO = lipo
+LN_S = ln -s
 LTLIBOBJS = 
 LT_SYS_LIBRARY_PATH = 
-MAKEINFO = ${SHELL} /mnt/share/ppt_demo/server/src/3rd/libevent/missing makeinfo
+MAKEINFO = ${SHELL} /Users/heyuhan/Desktop/ppt_demo/server/src/3rd/libevent/missing makeinfo
 MANIFEST_TOOL = :
-MKDIR_P = /usr/bin/mkdir -p
+MKDIR_P = /usr/local/bin/gmkdir -p
 NM = /usr/bin/nm -B
-NMEDIT = 
-OBJDUMP = objdump
+NMEDIT = nmedit
+OBJDUMP = false
 OBJEXT = o
 OPENSSL_INCS = 
 OPENSSL_LIBADD = 
-OPENSSL_LIBS = 
-OTOOL = 
-OTOOL64 = 
+OPENSSL_LIBS = -lssl -lcrypto -lz   
+OTOOL = otool
+OTOOL64 = :
 PACKAGE = libevent
 PACKAGE_BUGREPORT = 
 PACKAGE_NAME = libevent
@@ -853,9 +852,9 @@ PACKAGE_TARNAME = libevent
 PACKAGE_URL = 
 PACKAGE_VERSION = 2.1.8-stable
 PATH_SEPARATOR = :
-PKG_CONFIG = /usr/bin/pkg-config
+PKG_CONFIG = /usr/local/bin/pkg-config
 PTHREAD_CC = gcc
-PTHREAD_CFLAGS = -pthread
+PTHREAD_CFLAGS = -D_THREAD_SAFE 
 PTHREAD_LIBS =  $(am__append_12)
 RANLIB = ranlib
 SED = /usr/bin/sed
@@ -863,11 +862,11 @@ SET_MAKE =
 SHELL = /bin/sh
 STRIP = strip
 VERSION = 2.1.8-stable
-ZLIB_LIBS = 
-abs_builddir = /mnt/share/ppt_demo/server/src/3rd/libevent
-abs_srcdir = /mnt/share/ppt_demo/server/src/3rd/libevent
-abs_top_builddir = /mnt/share/ppt_demo/server/src/3rd/libevent
-abs_top_srcdir = /mnt/share/ppt_demo/server/src/3rd/libevent
+ZLIB_LIBS = -lz 
+abs_builddir = /Users/heyuhan/Desktop/ppt_demo/server/src/3rd/libevent
+abs_srcdir = /Users/heyuhan/Desktop/ppt_demo/server/src/3rd/libevent
+abs_top_builddir = /Users/heyuhan/Desktop/ppt_demo/server/src/3rd/libevent
+abs_top_srcdir = /Users/heyuhan/Desktop/ppt_demo/server/src/3rd/libevent
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_DUMPBIN = 
@@ -878,26 +877,26 @@ am__quote =
 am__tar = $${TAR-tar} chof - "$$tardir"
 am__untar = $${TAR-tar} xf -
 bindir = ${exec_prefix}/bin
-build = x86_64-unknown-linux-gnu
+build = x86_64-apple-darwin15.6.0
 build_alias = 
 build_cpu = x86_64
-build_os = linux-gnu
-build_vendor = unknown
+build_os = darwin15.6.0
+build_vendor = apple
 builddir = .
 datadir = ${datarootdir}
 datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
-host = x86_64-unknown-linux-gnu
+host = x86_64-apple-darwin15.6.0
 host_alias = 
 host_cpu = x86_64
-host_os = linux-gnu
-host_vendor = unknown
+host_os = darwin15.6.0
+host_vendor = apple
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /mnt/share/ppt_demo/server/src/3rd/libevent/install-sh
+install_sh = ${SHELL} /Users/heyuhan/Desktop/ppt_demo/server/src/3rd/libevent/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -1079,16 +1078,16 @@ nodist_include_event2_HEADERS = include/event2/event-config.h
 SAMPLES = sample/dns-example sample/event-read-fifo sample/hello-world \
 	sample/http-server sample/http-connect sample/signal-test \
 	sample/time-test $(am__append_6)
-#sample_le_proxy_SOURCES = sample/le-proxy.c
-#sample_le_proxy_LDADD = libevent.la libevent_openssl.la ${OPENSSL_LIBS} ${OPENSSL_LIBADD}
-#sample_le_proxy_INCLUDES = $(OPENSSL_INCS)
-#sample_https_client_SOURCES = \
-#	sample/https-client.c \
-#	sample/hostcheck.c \
-#	sample/openssl_hostname_validation.c
+sample_le_proxy_SOURCES = sample/le-proxy.c
+sample_le_proxy_LDADD = libevent.la libevent_openssl.la ${OPENSSL_LIBS} ${OPENSSL_LIBADD}
+sample_le_proxy_INCLUDES = $(OPENSSL_INCS)
+sample_https_client_SOURCES = \
+	sample/https-client.c \
+	sample/hostcheck.c \
+	sample/openssl_hostname_validation.c
 
-#sample_https_client_LDADD = libevent.la libevent_openssl.la ${OPENSSL_LIBS} ${OPENSSL_LIBADD}
-#sample_https_client_INCLUDES = $(OPENSSL_INCS)
+sample_https_client_LDADD = libevent.la libevent_openssl.la ${OPENSSL_LIBS} ${OPENSSL_LIBADD}
+sample_https_client_INCLUDES = $(OPENSSL_INCS)
 sample_event_read_fifo_SOURCES = sample/event-read-fifo.c
 sample_event_read_fifo_LDADD = $(LIBEVENT_GC_SECTIONS) libevent.la
 sample_time_test_SOURCES = sample/time-test.c
@@ -1163,7 +1162,7 @@ test_regress_SOURCES = test/regress.c test/regress.gen.c \
 	$(regress_zlib_SOURCES) $(am__append_13) $(am__append_14)
 #regress_thread_SOURCES = test/regress_thread.c
 regress_thread_SOURCES = test/regress_thread.c
-#regress_zlib_SOURCES = test/regress_zlib.c
+regress_zlib_SOURCES = test/regress_zlib.c
 test_regress_LDADD = $(LIBEVENT_GC_SECTIONS) libevent.la \
 	$(PTHREAD_LIBS) $(ZLIB_LIBS) $(am__append_16)
 test_regress_CPPFLAGS = $(AM_CPPFLAGS) $(PTHREAD_CFLAGS) \
@@ -1231,10 +1230,10 @@ libevent_pthreads_la_LDFLAGS = $(GENERIC_LDFLAGS)
 libevent_extra_la_SOURCES = $(EXTRAS_SRC)
 libevent_extra_la_LIBADD = $(MAYBE_CORE) $(SYS_LIBS)
 libevent_extra_la_LDFLAGS = $(GENERIC_LDFLAGS)
-#libevent_openssl_la_SOURCES = bufferevent_openssl.c
-#libevent_openssl_la_LIBADD = $(MAYBE_CORE) $(OPENSSL_LIBS)
-#libevent_openssl_la_LDFLAGS = $(GENERIC_LDFLAGS)
-#libevent_openssl_la_CPPFLAGS = $(AM_CPPFLAGS) $(OPENSSL_INCS)
+libevent_openssl_la_SOURCES = bufferevent_openssl.c
+libevent_openssl_la_LIBADD = $(MAYBE_CORE) $(OPENSSL_LIBS)
+libevent_openssl_la_LDFLAGS = $(GENERIC_LDFLAGS)
+libevent_openssl_la_CPPFLAGS = $(AM_CPPFLAGS) $(OPENSSL_INCS)
 EVENT1_HDRS = \
 	include/evdns.h \
 	include/event.h \
@@ -2415,7 +2414,7 @@ distdir: $(DISTFILES)
 	  ! -type d ! -perm -444 -exec $(install_sh) -c -m a+r {} {} \; \
 	|| chmod -R a+r "$(distdir)"
 dist-gzip: distdir
-	tardir=$(distdir) && $(am__tar) | eval GZIP= gzip $(GZIP_ENV) -c >$(distdir).tar.gz
+	tardir=$(distdir) && $(am__tar) | GZIP=$(GZIP_ENV) gzip -c >$(distdir).tar.gz
 	$(am__post_remove_distdir)
 
 dist-bzip2: distdir
@@ -2441,7 +2440,7 @@ dist-shar: distdir
 	@echo WARNING: "Support for shar distribution archives is" \
 	               "deprecated." >&2
 	@echo WARNING: "It will be removed altogether in Automake 2.0" >&2
-	shar $(distdir) | eval GZIP= gzip $(GZIP_ENV) -c >$(distdir).shar.gz
+	shar $(distdir) | GZIP=$(GZIP_ENV) gzip -c >$(distdir).shar.gz
 	$(am__post_remove_distdir)
 
 dist-zip: distdir
@@ -2459,7 +2458,7 @@ dist dist-all:
 distcheck: dist
 	case '$(DIST_ARCHIVES)' in \
 	*.tar.gz*) \
-	  eval GZIP= gzip $(GZIP_ENV) -dc $(distdir).tar.gz | $(am__untar) ;;\
+	  GZIP=$(GZIP_ENV) gzip -dc $(distdir).tar.gz | $(am__untar) ;;\
 	*.tar.bz2*) \
 	  bzip2 -dc $(distdir).tar.bz2 | $(am__untar) ;;\
 	*.tar.lz*) \
@@ -2469,7 +2468,7 @@ distcheck: dist
 	*.tar.Z*) \
 	  uncompress -c $(distdir).tar.Z | $(am__untar) ;;\
 	*.shar.gz*) \
-	  eval GZIP= gzip $(GZIP_ENV) -dc $(distdir).shar.gz | unshar ;;\
+	  GZIP=$(GZIP_ENV) gzip -dc $(distdir).shar.gz | unshar ;;\
 	*.zip*) \
 	  unzip $(distdir).zip ;;\
 	esac

@@ -16,7 +16,11 @@ TestServer::~TestServer()
 bool TestServer::Initialize()
 {
 	if (!BaseServer::Initialize())return false;
-	if (!client_pool.Initialize(2048))return false;
+	if (!client_pool.Initialize(2048))
+	{
+		printf("client pool init error\n");
+		return false;
+	}
 	listenner.addr.sin_family = AF_INET;
 	listenner.addr.sin_addr.s_addr = 0;
 	listenner.addr.sin_port = htons(9595);

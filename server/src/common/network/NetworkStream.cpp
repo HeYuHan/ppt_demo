@@ -1,5 +1,5 @@
 #include "NetworkStream.h"
-#include <string.h>
+#include <string>
 NetworkStream::NetworkStream():
 	write_buff(nullptr)
 	,read_buff(nullptr)

@@ -33,13 +33,13 @@ default : $(TARGET)
 rebuild : clean default
 
 
-objs/%.d: %.cpp | dircheck
+objs/%.d: %.cpp|checkdir
 	@$(CC) -MM $(CFLAGS) $< | sed 's,\($*\)\.o[ :]*,objs/\1.o $@ : ,g' >$@
 
 objs/%.o: %.cpp
 	$(CC) $(CFLAGS) -o $@ $<
 
-dircheck:
+checkdir:
 	python ../checkdir.py
 
 -include $(DEPS)
