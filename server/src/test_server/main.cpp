@@ -68,6 +68,6 @@ using namespace std;
 int main(int argc, char** argv)
 {
 	printf("server start\n");
-	gTestServer.Initialize();
+	bool ret = gTestServer.Initialize();
 	return gTestServer.Run();
 }
