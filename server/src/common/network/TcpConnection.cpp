@@ -78,6 +78,10 @@ void TcpConnection::OnClose()
 {
 	Disconnect();
 }
+void TcpConnection::OnStreamError(int error)
+{
+	Disconnect();
+}
 void TcpConnection::OnError(short error)
 {
 	if (error & BEV_EVENT_ERROR) {
@@ -94,13 +98,11 @@ void TcpConnection::OnError(short error)
 	OnClose();
 	
 }
-void TcpConnection::Reset()
+void TcpConnection::ResetStream()
 {
 	
 	SetReadBuffer(read_buffer, 0, STREAM_BUFF_SIZE);
 	SetWriteBuffer(write_buffer, 0, STREAM_BUFF_SIZE);
-	m_State = S_Idle;
-	m_Socket = INVALID_SOCKET;
 }
 void TcpConnection::FreeBufferEvent()
 {
@@ -127,14 +129,14 @@ void TcpConnection::Disconnect()
 		printf("client close fd:%d\n", m_Socket);
 		FreeBufferEvent();
 		evutil_closesocket(m_Socket);
-		Reset();
+		m_State = S_Disconnected;
 		OnDisconnect();
 	}
 	
 }
 void TcpConnection::SetSocketEvent(SOCKET socket, sockaddr_in addr)
 {
-	Reset();
+	ResetStream();
 	FreeBufferEvent();
 	m_Socket = socket;
 	m_Addr = addr;
@@ -144,7 +146,7 @@ void TcpConnection::SetSocketEvent(SOCKET socket, sockaddr_in addr)
 }
 bool TcpConnection::Initialize()
 {
-	Reset();
+	ResetStream();
 	return true;
 }
 void TcpConnection::OnConnected()
@@ -157,12 +159,6 @@ void TcpConnection::OnDisconnect()
 }
 void TcpConnection::OnMessage()
 {
-	char msg[128] = { 0 };
-	ReadString(msg,128);
-	printf("client msg:%s FD=%d\n", msg,m_Socket);
-	BeginWrite();
-	WriteString("hello client");
-	EndWrite();
 }
 TcpConnection* TcpConnection::Create()
 {
@@ -171,6 +167,6 @@ TcpConnection* TcpConnection::Create()
 	{
 		return tcp;
 	}
-	free(tcp);
+	delete (tcp);
 	return nullptr;
 }

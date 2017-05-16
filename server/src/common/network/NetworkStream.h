@@ -5,7 +5,7 @@
 typedef enum
 {
 	READERROR=0,WRITEERROR=1
-}NETERR;
+}STREAMERROR;
 class NetworkStream
 {
 
@@ -26,6 +26,8 @@ protected:
 public:
 	void SetReadBuffer(char* buffer, int data_size, int buffer_len);
 	void SetWriteBuffer(char* buffer, int data_size, int buffer_len);
+protected:
+	virtual void OnStreamError(int error);
 //////////////////////////////////////////////////////////////
 //write data
 public:

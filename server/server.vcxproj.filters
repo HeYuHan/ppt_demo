@@ -27,9 +27,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\common\network\TcpConnection.cpp">
       <Filter>src\common\network</Filter>
     </ClCompile>
@@ -47,6 +44,12 @@
     </ClCompile>
     <ClCompile Include="src\common\network\TcpListener.cpp">
       <Filter>src\common\network</Filter>
+    </ClCompile>
+    <ClCompile Include="src\test_server\main.cpp">
+      <Filter>src\test_server</Filter>
+    </ClCompile>
+    <ClCompile Include="src\test_server\test_client.cpp">
+      <Filter>src\test_server</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="src\common\network\TcpListener.h">
       <Filter>src\common\network</Filter>
+    </ClInclude>
+    <ClInclude Include="src\test_server\test_client.h">
+      <Filter>src\test_server</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

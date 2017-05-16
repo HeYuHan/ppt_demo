@@ -23,17 +23,23 @@ void NetworkStream::SetReadBuffer(char* buffer, int data_size,int buffer_len)
 	read_position = buffer;
 	read_end = &buffer[data_size];
 	read_buff_len = buffer_len;
+	memset(buffer, 0, read_end - read_position);
 }
 void NetworkStream::SetWriteBuffer(char* buffer, int data_size,int buffer_len)
 {
+	
 	write_buff = buffer;
 	write_position = buffer;
 	write_end = &buffer[data_size];
 	write_buff_len = buffer_len;
-	send_position = write_position;
-	send_end = write_end;
+	send_position = nullptr;
+	send_end = nullptr;
+	memset(buffer, 0, write_end - write_position);
 }
-
+void NetworkStream::OnStreamError(int error)
+{
+	//perror("stream error...\n");
+}
 //////////////////////////////////////////////////////////////
 //write data
 void NetworkStream::BeginWrite()
@@ -54,8 +60,7 @@ void NetworkStream::EndWrite()
 		memmove(write_buff, start, wait_send_len);
 		send_position = write_buff;
 		send_end = send_position + wait_send_len;
-		write_position = send_position;
-		write_end = send_end;
+		write_position = write_end = send_end;
 	}
 	else
 	{
@@ -106,9 +111,11 @@ void NetworkStream::WriteString(const char* str)
 }
 void NetworkStream::WriteData(const void* data, int count) 
 {
-	if (write_buff == nullptr || count < 0 || write_end + count > write_buff + write_buff_len)
+	int empty_size = (write_buff + write_buff_len) - (write_end + count);
+	if (write_buff == nullptr || count < 0 || empty_size <= 0)
 	{
-		throw WRITEERROR;
+		OnStreamError(WRITEERROR);
+		return;
 	}
 	if (count > 0)
 	{
@@ -117,6 +124,7 @@ void NetworkStream::WriteData(const void* data, int count)
 	}
 
 }
+
 //////////////////////////////////////////////////////////////
 //read data
 void NetworkStream::ReadByte(byte &data)

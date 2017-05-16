@@ -23,4 +23,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <new>
+#include "BaseServer.h"
+#include "network/TcpConnection.h"
 #endif

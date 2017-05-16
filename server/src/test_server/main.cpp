@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include<iostream>
-#include "common/BaseServer.h"
+#include "test_server.h"
 using namespace std;
 // void write_cb(struct bufferevent *bev, void *ctx)
 // {
@@ -68,6 +68,6 @@ using namespace std;
 int main(int argc, char** argv)
 {
 	printf("server start\n");
-	gServer.Initialize();
-	return gServer.Run();
+	gTestServer.Initialize();
+	return gTestServer.Run();
 }

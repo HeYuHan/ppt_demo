@@ -7,7 +7,7 @@
 #define STREAM_BUFF_SIZE 1024
 enum TcpState
 {
-	S_Idle=0,S_Connected,S_Destory
+	S_Idle=0,S_Connected,S_Disconnected
 };
 
 class TcpConnection:public ISocketEvent,public NetworkStream
@@ -19,12 +19,11 @@ public:
 private:
 	char read_buffer[STREAM_BUFF_SIZE];
 	char write_buffer[STREAM_BUFF_SIZE];
-public:
 	TcpState m_State;
+public:
 	BufferEvent* m_BufferEvent;
 	SOCKET m_Socket;
 	sockaddr_in m_Addr;
-	uint uid;
 private:
 	void ReadMessage();
 	void WriteMessage();
@@ -37,13 +36,14 @@ protected:
 	virtual void OnMessage();
 	virtual void OnConnected();
 	virtual void OnDisconnect();
+	virtual void OnStreamError(int error);
 	
 public: 
-
+	const bool IsConnected() { return m_State == S_Connected; };
 	void SetSocketEvent(SOCKET socket, sockaddr_in addr);
 	bool Initialize();
 	void FreeBufferEvent();
-	void Reset();
+	void ResetStream();
 	void Update();
 	static TcpConnection* Create();
 };

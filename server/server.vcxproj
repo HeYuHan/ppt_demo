@@ -24,7 +24,8 @@
     <ClCompile Include="src\common\network\NetworkStream.cpp" />
     <ClCompile Include="src\common\network\TcpConnection.cpp" />
     <ClCompile Include="src\common\network\TcpListener.cpp" />
-    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\test_server\main.cpp" />
+    <ClCompile Include="src\test_server\test_client.cpp" />
     <ClCompile Include="src\test_server\test_server.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -36,6 +37,7 @@
     <ClInclude Include="src\common\network\TcpConnection.h" />
     <ClInclude Include="src\common\network\TcpListener.h" />
     <ClInclude Include="src\common\objectpool.h" />
+    <ClInclude Include="src\test_server\test_client.h" />
     <ClInclude Include="src\test_server\test_server.h" />
   </ItemGroup>
   <ItemGroup>
@@ -101,10 +103,10 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\server\src\3rd\libevent\WIN32-Code\nmake;$(SolutionDir)..\server\src\3rd\libevent\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\server\src\3rd\libevent\WIN32-Code\nmake;$(SolutionDir)..\server\src\3rd\protobuf-2.6.1\vsprojects\include;$(SolutionDir)..\server\src\3rd\libevent\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>$(SolutionDir)..\server\src\3rd\libevent\libevent.lib;$(SolutionDir)..\server\src\3rd\libevent\libevent_core.lib;$(SolutionDir)..\server\src\3rd\libevent\libevent_extras.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)..\server\src\3rd\libevent\libevent.lib;$(SolutionDir)..\server\src\3rd\libevent\libevent_core.lib;$(SolutionDir)..\server\src\3rd\libevent\libevent_extras.lib;$(SolutionDir)..\server\src\3rd\protobuf-2.6.1\vsprojects\lib\libprotobuf.lib;$(SolutionDir)..\server\src\3rd\protobuf-2.6.1\vsprojects\lib\libprotobuf-lite.lib;$(SolutionDir)..\server\src\3rd\protobuf-2.6.1\vsprojects\lib\libprotoc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

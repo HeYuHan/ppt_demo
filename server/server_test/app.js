@@ -1,8 +1,8 @@
 ﻿var net = require('net');
 function ConnectServer() {
     var client = new net.Socket();
-    client.connect(9595, "192.168.1.168", function () {
-        console.log('connected to: 192.168.1.168');
+    client.connect(9595, "192.168.1.4", function () {
+        console.log('connected to: 192.168.1.4');
         var buf = new Buffer(8);
         var str = "asdfsadfsadf";
         buf.writeInt32LE(str.length + 4);
