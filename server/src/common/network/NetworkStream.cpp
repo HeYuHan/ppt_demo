@@ -5,6 +5,8 @@ NetworkStream::NetworkStream():
 	,read_buff(nullptr)
 	,write_position(nullptr)
 	,write_end(nullptr)
+	,read_buff_end(nullptr)
+	,write_buff_end(nullptr)
 	,read_position(nullptr)
 	,read_end(nullptr)
 	,send_position(nullptr)
@@ -23,6 +25,7 @@ void NetworkStream::SetReadBuffer(char* buffer, int data_size,int buffer_len)
 	read_position = buffer;
 	read_end = &buffer[data_size];
 	read_buff_len = buffer_len;
+	read_buff_end = &buffer[buffer_len - 1];
 	memset(buffer, 0, read_end - read_position);
 }
 void NetworkStream::SetWriteBuffer(char* buffer, int data_size,int buffer_len)
@@ -34,11 +37,8 @@ void NetworkStream::SetWriteBuffer(char* buffer, int data_size,int buffer_len)
 	write_buff_len = buffer_len;
 	send_position = nullptr;
 	send_end = nullptr;
+	write_buff_end = &buffer[buffer_len - 1];
 	memset(buffer, 0, write_end - write_position);
-}
-void NetworkStream::OnStreamError(int error)
-{
-	//perror("stream error...\n");
 }
 //////////////////////////////////////////////////////////////
 //write data
@@ -54,7 +54,10 @@ void NetworkStream::EndWrite()
 	if (totole_len > int_len)
 	{
 		int data_len = totole_len - int_len;
-		memcpy(write_position, &data_len, int_len);
+		char* write_end_backup = write_end;
+		write_end = write_position;
+		WriteInt(data_len);
+		write_end = write_end_backup;
 		char* start = send_position ? send_position : write_position;
 		int wait_send_len = write_end - start;
 		memmove(write_buff, start, wait_send_len);
@@ -124,7 +127,18 @@ void NetworkStream::WriteData(const void* data, int count)
 	}
 
 }
-
+bool NetworkStream::WriteProto(ProtoMessage &proto)
+{
+	int size = proto.ByteSize();
+	if (size > 0 && ((write_buff_end - write_position) - (size + sizeof(int)))>0)
+	{
+		WriteInt(size);
+		proto.SerializeToArray(write_end, size);
+		write_end += size;
+		return true;
+	}
+	return false;
+}
 //////////////////////////////////////////////////////////////
 //read data
 void NetworkStream::ReadByte(byte &data)
@@ -180,11 +194,29 @@ void NetworkStream::ReadData(void* data, int count)
 {
 	if (read_buff == nullptr || count < 0 || read_end - read_position<count)
 	{
-		throw READERROR;
+		OnStreamError(READERROR);
+		return;
 	}
 	if (count > 0)
 	{
 		memcpy(data, read_position, count);
 		read_position += count;
 	}
+}
+bool NetworkStream::ReadProto(ProtoMessage &proto)
+{
+	int size = 0;
+	ReadInt(size);
+	int unread = read_end - read_position;
+	if (size > 0&& unread>=size)
+	{
+		proto.ParseFromArray(read_position, size);
+		read_position += size;
+		return true;
+	}
+	else
+	{
+		OnStreamError(READERROR);
+	}
+	return false;
 }

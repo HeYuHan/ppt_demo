@@ -7,4 +7,5 @@ public:
 protected:
 	virtual void OnDisconnect();
 	virtual void OnMessage();
+	virtual void OnConnected();
 };

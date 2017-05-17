@@ -35,27 +35,22 @@ void TcpConnection::ReadMessage()
 		if (totle_len > 4)
 		{
 			int data_len = 0;
-			memcpy(&data_len, read_position, sizeof(int));
+			char* read_position_backup = read_position;
+			ReadInt(data_len);
 			if (totle_len - data_len >= 4)
 			{
-				char* backup_position = read_position + 4;
-				read_position = backup_position;
+				read_position_backup = read_position;
 				OnMessage();
-				read_position = backup_position + data_len;
+				read_position = read_position_backup + data_len;
 				continue;
+			}
+			else
+			{
+				read_position = read_position_backup;
 			}
 		}
 		break;
 	}
-
-	//move data
-	int unread_len = read_end - read_position;
-	if (unread_len > 0)
-	{
-		memcpy(read_buff, read_position, unread_len);
-	}
-	read_position = read_buff;
-	read_end = read_buff + unread_len;
 }
 void TcpConnection::OnRead()
 {
@@ -69,6 +64,17 @@ void TcpConnection::OnRead()
 		start += evbuffer_remove(input, start, end - start);
 		read_end = start;
 	}
+	//move data
+	if (read_position - read_buff > 0)
+	{
+		int unread_len = read_end - read_position;
+		if (unread_len > 0)
+		{
+			memmove(read_buff, read_position, unread_len);
+		}
+		read_position = read_buff;
+		read_end = read_buff + unread_len;
+	}
 }
 void TcpConnection::OnWrite()
 {
@@ -78,8 +84,9 @@ void TcpConnection::OnClose()
 {
 	Disconnect();
 }
-void TcpConnection::OnStreamError(int error)
+void TcpConnection::OnStreamError(int error, const char* msg)
 {
+	printf("client stream error:%d msg:%s", error, msg ? msg : "");
 	Disconnect();
 }
 void TcpConnection::OnError(short error)

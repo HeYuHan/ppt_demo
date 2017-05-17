@@ -36,7 +36,7 @@ protected:
 	virtual void OnMessage();
 	virtual void OnConnected();
 	virtual void OnDisconnect();
-	virtual void OnStreamError(int error);
+	virtual void OnStreamError(int error,const char* msg=nullptr);
 	
 public: 
 	const bool IsConnected() { return m_State == S_Connected; };

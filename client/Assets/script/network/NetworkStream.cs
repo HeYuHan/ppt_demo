@@ -6,51 +6,38 @@ using ProtoBuf;
 using System.IO;
 unsafe public class NetworkStream {
 
-    byte[] write_buff = null;
-    byte[] read_buff = null;
-    int write_position = 0;
-    int write_end = 0;
-    int read_position = 0;
-    int read_end = 0;
-    int send_position = 0;
-    int send_end = 0;
-    public int ReadPosition
-    {
-        get { return read_position; }
-    }
-    public int ReadEnd
-    {
-        get { return read_end; }
-    }
-    public int SendPosition
-    {
-        get { return write_position; }
-    }
-    public int SendEnd
-    {
-        get { return write_end; }
-    }
+    protected byte[] write_buffer = null;
+    protected byte[] read_buffer = null;
+    protected int write_position = 0;
+    protected int write_end = 0;
+    protected int read_position = 0;
+    protected int read_end = 0;
+    protected int send_position = 0;
+    protected int send_end = 0;
+
     public NetworkStream(int buff_size = 0)
     {
         if (buff_size > 0)
         {
-            write_buff = new byte[buff_size];
-            read_buff = new byte[buff_size];
+            write_buffer = new byte[buff_size];
+            read_buffer = new byte[buff_size];
         }
     }
     public void SetReadBuffer(byte[] buffer, int data_size)
     {
-        read_buff = buffer;
+        read_buffer = buffer;
         read_position = 0;
         read_end = data_size;
     }
-    public void SetSendBuffer(byte[] buffer, int data_size)
+    public void SetWriteBuffer(byte[] buffer, int data_size)
     {
-        write_buff = buffer;
+        write_buffer = buffer;
         write_position = 0;
         write_end = data_size;
+        send_position = 0;
+        send_end = 0;
     }
-    static void CopyArray(byte* src, byte* dst, int count)
+    public static void CopyArray(byte* src, byte* dst, int count)
     {
         if (null == src || null == dst || count<=0)
         {
@@ -128,7 +115,7 @@ unsafe public class NetworkStream {
         int len = ReadInt();
         if(len>0)
         {
-            fixed(byte* data= &read_buff[read_position])
+            fixed(byte* data= &read_buffer[read_position])
             {
                 read_position += len;
                 return new string((char*)data,0,len/2);
@@ -139,12 +126,17 @@ unsafe public class NetworkStream {
     }
     public T ReadProtoBuf<T>()where T: new()
     {
-        using (MemoryStream ms = new MemoryStream(read_buff, read_position, read_end-read_position, false))
+        int len = ReadInt();
+        if (len > 0 && len <= (read_end - read_position))
         {
-            T instance = Serializer.Deserialize<T>(ms);
-            read_position += (int)ms.Position;
-            return instance;
+            using (MemoryStream ms = new MemoryStream(read_buffer, read_position, len, false))
+            {
+                T instance = Serializer.Deserialize<T>(ms);
+                read_position += len;
+                return instance;
+            }
         }
+        return default(T);
     }
     public void ReadData(byte[] data,int count)
     {
@@ -155,7 +147,7 @@ unsafe public class NetworkStream {
     }
     public void ReadData(void* data,int count)
     {
-        if(read_buff==null)
+        if(read_buffer==null)
         {
             throw new Exception("read_buff==null");
         }
@@ -164,7 +156,7 @@ unsafe public class NetworkStream {
             throw new Exception("read_position+count>read_end");
         }
         
-        fixed (byte* pSrc = &read_buff[read_position])
+        fixed (byte* pSrc = &read_buffer[read_position])
         {
             CopyArray(pSrc, (byte*)data, count);
         }
@@ -175,15 +167,30 @@ unsafe public class NetworkStream {
     //write data
     public void BeginWrite()
     {
-        write_position = send_end;
+        write_position = write_end;
         write_end = write_position + 4;
 
     }
     public void EndWrite()
     {
-        if(write_end-write_position>4)
+        int totole_len = write_end - write_position;
+        int int_len = 4;
+        if (totole_len > int_len)
         {
-
+            int data_len = totole_len - int_len;
+            int write_end_backup = write_end;
+            write_end = write_position;
+            WriteInt(data_len);
+            write_end = write_end_backup;
+            int start = (send_position < write_position) ? send_position : write_position;
+            int wait_send_len = write_end - start;
+            fixed(byte* data_start= &write_buffer[start],origin = write_buffer)
+            {
+                CopyArray(data_start, origin, wait_send_len);
+            }
+            send_position = 0;
+            send_end = wait_send_len;
+            write_position = write_end = send_end;
         }
         else
         {
@@ -237,10 +244,12 @@ unsafe public class NetworkStream {
     }
     public void WriteProtoBuf<T>(T instance)
     {
-        using (MemoryStream ms = new MemoryStream(write_buff, write_end, write_buff.Length - write_end, true))
+        using (MemoryStream ms = new MemoryStream(write_buffer, write_end+4, write_buffer.Length - write_end-4, true))
         {
             Serializer.Serialize(ms, instance);
-            write_end += (int)ms.Position;
+            int serialize = (int)ms.Position;
+            WriteInt(serialize);
+            write_end += serialize;
         }
             
     }
@@ -255,11 +264,11 @@ unsafe public class NetworkStream {
   
     void WriteData(void* data,int count)
     {
-        if(write_buff==null)
+        if(write_buffer==null)
         {
             throw new System.Exception("send_buff==null");
         }
-        if(write_end + count > write_buff.Length)
+        if(write_end + count > write_buffer.Length)
         {
             throw new System.Exception("send_end+count>send_buff.Length");
         }
@@ -267,7 +276,7 @@ unsafe public class NetworkStream {
         {
             throw new System.Exception("count<=0");
         }
-        fixed (byte* pDst = &write_buff[write_end])
+        fixed (byte* pDst = &write_buffer[write_end])
         {
             CopyArray((byte*)data, pDst, count);
         }

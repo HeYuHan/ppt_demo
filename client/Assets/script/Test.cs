@@ -4,13 +4,20 @@ using UnityEngine;
 using ProtoBuf;
 using tutorial;
 using System.IO;
+public class TestClient:TcpConnection
+{
 
-public class Test : MonoBehaviour {
+    public TestClient():base("127.0.0.1",9595)
+    {
 
-	// Use this for initialization
-	void Start () {
+    }
+    public override void OnMessage()
+    {
+        tutorial.AddressBook ab = ReadProtoBuf<tutorial.AddressBook>();
+        UnityEngine.Debug.Log("on message......");
+
         AddressBook abook = new AddressBook();
-        
+
         Person p = new Person();
         p.email = "asdfasdfsdaf";
         p.id = 1;
@@ -22,36 +29,25 @@ public class Test : MonoBehaviour {
         p.phone.Add(n);
 
         abook.person.Add(p);
+        BeginWrite();
+        WriteProtoBuf<AddressBook>(abook);
+        EndWrite();
+    }
+}
+
+public class Test : MonoBehaviour {
+    TestClient t;
+	// Use this for initialization
+	void Start () {
         
 
-        byte[] data = new byte[1024];
-        NetworkStream s = new NetworkStream();
-        s.SetSendBuffer(data,0);
-        s.WriteByte(4);
-        s.WriteShort(232);
-        s.WriteInt(1000);
-        s.WriteFloat(100.12345f);
-        s.WriteString("12345qwer哈哈哈123");
-        s.WriteUInt(12345);
-        s.WriteLong(long.MaxValue - 10);
-        s.WriteProtoBuf(abook);
-        
-        Debug.Log("send length=" + s.SendEnd);
-        NetworkStream s2 = new NetworkStream();
-        s2.SetReadBuffer(data, s.SendEnd);
-        Debug.Log(s2.ReadByte());
-        Debug.Log(s2.ReadShort());
-        Debug.Log(s2.ReadInt());
-        Debug.Log(s2.ReadFloat());
-        Debug.Log(s2.ReadString());
-        Debug.Log(s2.ReadUInt());
-        Debug.Log(s2.ReadLong());
-        AddressBook ab2=s2.ReadProtoBuf<AddressBook>();
+        t = new TestClient();
+        t.Connect();
         return;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+        if (t != null) t.Update();
 	}
 }
